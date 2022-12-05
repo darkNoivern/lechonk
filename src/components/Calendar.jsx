@@ -133,7 +133,7 @@ const Calendar = () => {
                     </div>
                 </div>
                 <div class="calendar-body">
-                    <div class="calendar-week-day">
+                    <div class="calendar-week-day grid sevengrid">
                         <div>Sun</div>
                         <div>Mon</div>
                         <div>Tue</div>
@@ -142,7 +142,7 @@ const Calendar = () => {
                         <div>Fri</div>
                         <div>Sat</div>
                     </div>
-                    <div class="calendar-days"></div>
+                    <div class="calendar-days grid sevengrid"></div>
                 </div>
 
                 <div class="month-list"></div>

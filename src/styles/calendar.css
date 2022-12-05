@@ -8,7 +8,7 @@
     padding: 20px;
     position: relative;
     overflow: hidden;
-    transform: scale(0.6);
+    transform: scale(0.8);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 /* 
@@ -272,4 +272,8 @@
 .selected__day{
     background-color: var(--first-color-lighter) !important;
     border-radius: 50%;
+}
+
+.sevengrid{
+    grid-template-columns: repeat(7,1fr) !important;
 }
