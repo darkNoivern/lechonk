@@ -24,18 +24,18 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 25px;
+    font-size: 1.5rem;
     font-weight: 600;
     color: var(--color-txt);
-    padding: 10px;
+    padding: 0.5rem;
 }
 
 .calendar-body {
-    padding: 10px;
+    padding: 0.6rem;
 }
 
 .calendar-week-day {
-    height: 50px;
+    height: 3rem;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     font-weight: 600;
@@ -50,17 +50,17 @@
 .calendar-days {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 2px;
+    gap: 0.25rem;
     color: var(--color-txt);
 }
 
 .calendar-days div {
-    width: 50px;
-    height: 50px;
+    width: 3rem;
+    height: 3rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 5px;
+    padding: 0.5rem;
     position: relative;
     cursor: pointer;
     animation: to-top 1s forwards;
