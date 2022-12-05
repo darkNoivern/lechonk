@@ -37,10 +37,13 @@ const Balance = () => {
                                 }}
                                 className="uil uil-times services__modal-close"></i>
                         </div> */}
-                        <div>
+                        {/* <div> */}
                             <div className='modify__calendar__container'>
                                 <div className="section__title">Choose Date</div>
+                                <div className="flexy">
+
                                 <Calendar />
+                                </div>
                                 <div className='calendar__button__container'>
                                     <button
                                     onClick={()=>{setOpenCalendar(false);}}
@@ -50,7 +53,7 @@ const Balance = () => {
                                     className="button custom__button">Close</button>
                                 </div>
                             </div>
-                        </div>
+                        {/* </div> */}
                     </div>
                 }
 

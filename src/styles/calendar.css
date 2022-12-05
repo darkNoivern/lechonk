@@ -229,7 +229,7 @@
 }
 
 .month-list.show {
-    transform: scale(0.8);
+    transform: scale(1);
     visibility: visible;
     pointer-events: visible;
     transition: all 0.2s ease-in-out;
