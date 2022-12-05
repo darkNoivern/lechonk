@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavLink, Link } from 'react-router-dom'
+import lechonk from '../img/915.png'
 
 const Navbar = () => {
 
@@ -24,7 +25,7 @@ const Navbar = () => {
         <header className="header" id="header">
             <nav className="nav container">
                 <Link to='/' className="nav__logo flexy">
-                <img className='nav__logo-img' src="https://www.serebii.net/art/th/915.png" alt="" />
+                <img className='nav__logo-img' src={lechonk} alt="" />
                 Expen$e Tracker
                 </Link>
                 <div className="nav__menu" id="nav-menu">
