@@ -7,10 +7,10 @@ const Calendar = () => {
 
     const setDate = (date) => {
         let days = document.querySelectorAll('.calendar-day-hover');
-        days.forEach((day)=>{
+        days.forEach((day) => {
             day.classList.remove('selected__day');
         })
-        days[date-1].classList.add('selected__day');
+        days[date - 1].classList.add('selected__day');
         setDataDate(date);
     }
 
@@ -33,17 +33,17 @@ const Calendar = () => {
             let calendar_header_year = calendar.querySelector('#year')
 
             let days_of_month = [31, getFebDays(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-            
-            console.log(month, month_names[month],year)
+
+            console.log(month, month_names[month], year)
 
             calendar_days.innerHTML = ''
 
             let currDate = new Date()
             // if (month === ) 
-            if (!year){
+            if (!year) {
                 month = currDate.getMonth()
                 year = currDate.getFullYear()
-            } 
+            }
             let curr_month = `${month_names[month]}`
             month_picker.innerHTML = curr_month
             calendar_header_year.innerHTML = year
@@ -57,7 +57,7 @@ const Calendar = () => {
                 if (i >= first_day.getDay()) {
                     day.classList.add('calendar-day-hover')
                     // day.onclick(()=>{setDate(i+1)})
-                    day.addEventListener('click',function (){
+                    day.addEventListener('click', function () {
                         setDate(i - first_day.getDay() + 1);
                     })
                     day.innerHTML = i - first_day.getDay() + 1
@@ -79,7 +79,7 @@ const Calendar = () => {
             month.innerHTML = `<div data-month="${index}">${e}</div>`
             month.querySelector('div').onclick = () => {
                 month_list.classList.remove('show')
-                console.log(e,index)
+                console.log(e, index)
                 document.querySelector('.calendar-header').classList.remove('hide__visibility')
                 document.querySelector('.calendar-body').classList.remove('hide__visibility')
 
@@ -132,17 +132,20 @@ const Calendar = () => {
                         </span>
                     </div>
                 </div>
-                <div class="calendar-body">
-                    <div class="calendar-week-day grid sevengrid">
-                        <div>Sun</div>
-                        <div>Mon</div>
-                        <div>Tue</div>
-                        <div>Wed</div>
-                        <div>Thu</div>
-                        <div>Fri</div>
-                        <div>Sat</div>
+                <div className="flexy">
+
+                    <div class="calendar-body">
+                        <div class="calendar-week-day grid sevengrid">
+                            <div>Sun</div>
+                            <div>Mon</div>
+                            <div>Tue</div>
+                            <div>Wed</div>
+                            <div>Thu</div>
+                            <div>Fri</div>
+                            <div>Sat</div>
+                        </div>
+                        <div class="calendar-days grid sevengrid"></div>
                     </div>
-                    <div class="calendar-days grid sevengrid"></div>
                 </div>
 
                 <div class="month-list"></div>
