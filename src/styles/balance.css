@@ -30,6 +30,7 @@
 
 .transaction__card {
     width: 23rem;
+    max-width: 90vw;
     height: 6rem;
     /* margin-bottom: 2rem; */
     /* background-color: var(--container-color); */
@@ -79,6 +80,7 @@
     height: 5rem;
     border-radius: 0.3rem;
     width: 23rem;
+    max-width: 90vw;
     padding: 0.5rem 1rem;
     background-color: var(--container-color);
 }
@@ -95,6 +97,7 @@
     min-height: 5rem;
     padding: 0.5rem 1rem;
     width: 23rem;
+    max-width: 90vw;
     border-radius: 0.3rem;
     background-color: var(--container-color);
 }
