@@ -26,7 +26,8 @@ const Navbar = () => {
             <nav className="nav container">
                 <Link to='/' className="nav__logo flexy">
                 <img className='nav__logo-img' src={lechonk} alt="" />
-                Expen$e Tracker
+                {/* Expen$e Tracker */}
+                Lechonk
                 </Link>
                 <div className="nav__menu" id="nav-menu">
                     <ul className="nav__list grid">
@@ -71,17 +72,6 @@ const Navbar = () => {
                                 <i class="uil uil-pizza-slice nav__icon"></i>Manage
                             </NavLink>
                         </li>
-                        <li className="nav__item">
-                            <NavLink
-                                onClick={() => { linkAction(); }}
-                                activeClass="active"
-                                exact
-                                to="/contact"
-                                className="nav__link">
-                                <i class="uil uil-message nav__icon"></i>Contact Me
-                            </NavLink>
-                        </li>
-
                     </ul>
 
                     <i

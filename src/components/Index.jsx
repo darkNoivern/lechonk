@@ -5,17 +5,19 @@ import Notebook from './Notebook';
 import Contact from './Contact';
 import Balance from './Balance';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import NewBalance from './NewBalance';
 const Index = () => {
     return (
         <>
             <Router>
                 <Navbar />
-                <Routes>
+                <NewBalance />
+                {/* <Routes>
                     <Route exact path="/" element={<Home />} />
                     <Route exact path="/notebook" element={<Notebook />} />
                     <Route exact path="/contact" element={<Contact />} />
                     <Route exact path="/balance" element={<Balance />} />
-                </Routes>
+                </Routes> */}
             </Router>
         </>
     )

@@ -1,0 +1,78 @@
+/* .button__button{
+  font-family: 'Poppins', sans-serif !important;
+  padding: 0.25rem 1rem;
+} */
+
+.tab__button{
+    border-radius: 0;
+}
+
+.body__background{
+    font-family: 'Poppins', sans-serif !important;
+    background-color: var(--container-color);
+    display: inline-block !important;
+    /* background-color: var(--first-color); */
+    color: var(--title-color);
+    padding: 1rem;
+    /* border-radius: 0.5rem; */
+    border: none;
+    /* border-radius: 0.5rem 0.5rem 0 0; */
+    font-weight: var(--font-medium);
+
+}
+
+.active__button{
+    font-family: 'Poppins', sans-serif !important;
+    background-color: var(--first-color);
+    display: inline-block !important;
+    /* background-color: var(--first-color); */
+    color: #fff;
+    padding: 1rem;
+    border: none;
+    /* border-radius: 0.5rem 0.5rem 0 0; */
+    font-weight: var(--font-medium);
+    /* border: 1px solid var(--title-color); */
+    /* border-bottom: none; */
+}
+
+.middle__button{
+    border-right: 1px solid var(--text-color);
+}
+
+.left__curve{
+    border-radius: 2rem 0 0 2rem;
+}
+
+.right__curve{
+    border-radius: 0 2rem 2rem 0;
+}
+
+
+.tab__container{
+    margin-top: var(--mb-3);
+    grid-template-columns: repeat(4, 1fr) !important;
+    justify-content: center;
+    gap: 0;
+}
+
+.border__style{
+    /* border: 1px solid var(--title-color); */
+    padding: var(--mb-2-5) 0;
+}
+
+.grid2{
+    grid-template-columns: repeat(2, 1fr) !important;
+    justify-content: center;
+}
+.fontWeightNormal{
+    font-weight: normal;
+    font-size: 1.2rem;
+}
+
+.bigger__text{
+    font-size: 2.2rem;
+}
+
+.mb-3 {
+    margin-bottom: 1rem;
+}

@@ -1,7 +1,6 @@
 import React from 'react'
 
 const Flipcards = (props) => {
-    console.log(props)
     const spinner = () => {
         document.querySelectorAll(".sp-card")[props.id].classList.toggle("voltorb");
     };

@@ -83,7 +83,7 @@ const Balance = () => {
                 <span className="section__subtitle">Get details of past transactions here</span>
 
                 {
-                    [...Array(2)].map((element, index) => {
+                    [...Array(10)].map((element, index) => {
                         return (
                             <div className="flexy">
                                 <Flipcards id={index} key={index} />
