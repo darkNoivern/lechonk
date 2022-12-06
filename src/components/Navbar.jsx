@@ -57,19 +57,9 @@ const Navbar = () => {
                                 onClick={() => { linkAction(); }}
                                 activeClass="active"
                                 exact
-                                to="/balance"
+                                to="/layout"
                                 className="nav__link">
-                                <i class="uil uil-balance-scale nav__icon"></i>Balance
-                            </NavLink>
-                        </li>
-                        <li className="nav__item">
-                            <NavLink
-                                onClick={() => { linkAction(); }}
-                                activeClass="active"
-                                exact
-                                to="/manage"
-                                className="nav__link">
-                                <i class="uil uil-pizza-slice nav__icon"></i>Manage
+                                <i class="uil uil-pizza-slice nav__icon"></i>Layout
                             </NavLink>
                         </li>
                     </ul>

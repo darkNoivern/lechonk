@@ -35,7 +35,7 @@ const Manage = () => {
 
     return (
         <>
-            <section className="balance section">
+            {/* <section className="balance section"> */}
                 <h2 className="section__title">Doughnut</h2>
                 <span className="section__subtitle less__margin__subtitle">Get details of current balance here</span>
                 <div className="services__container container flexy">
@@ -48,7 +48,7 @@ const Manage = () => {
                         }}
                     />
                 </div>
-            </section>
+            {/* </section> */}
         </>
     )
 }

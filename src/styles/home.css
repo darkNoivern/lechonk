@@ -1,0 +1,43 @@
+.goldenLeafContainer {
+    background-image: url('../img/pokemon-sv-leaf-circle.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+
+.home__container {
+    grid-template-columns: repeat(1, 1fr) !important;
+}
+
+.home_container_dialogue{
+    min-height: 17rem;
+    font-size: var(--big-font-size);
+    font-weight: var(--font-semi-bold);
+}
+
+.style__home{
+    padding: var(--mb-3) 0;
+}
+
+@media screen and (max-width: 350px) {
+    .home_container_dialogue{
+        min-height: 15rem;
+    }
+    /* .home__container {
+        grid-template-columns: repeat(1, 1fr) !important;
+        justify-content: center;
+    } */
+}
+
+@media screen and (min-width: 568px) {
+    .home_container_dialogue{
+        min-height: 20rem;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .home__container {
+        grid-template-columns: repeat(2, 1fr) !important;
+        justify-content: center;
+    }
+}
