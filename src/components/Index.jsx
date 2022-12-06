@@ -2,8 +2,8 @@ import React from 'react'
 import Navbar from './Navbar'
 import Home from './Home';
 import Notebook from './Notebook';
-import Contact from './Contact';
-import Balance from './Balance';
+import '../styles/balance.css'
+import '../styles/calendar.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './Layout';
 import Login from './Login';

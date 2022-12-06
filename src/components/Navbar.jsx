@@ -1,9 +1,23 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { AuthContext } from '../context/AuthContext'
 import { NavLink, Link } from 'react-router-dom'
 import lechonk from '../img/915.png'
+import { auth } from '../firebase.config'
+import { signOut } from "firebase/auth";
 
 const Navbar = () => {
-
+    
+    const { currentUser } = useContext(AuthContext)
+    console.log('Index.jsx', currentUser);
+    
+    const logout = () => {
+        signOut(auth).then(() => {
+            // Sign-out successful.
+        }).catch((error) => {
+            // An error happened.
+        });
+    }
+    
     // const themeButton = document.getElementById('theme-button')
     const darkTheme = 'dark-theme'
 
@@ -25,9 +39,9 @@ const Navbar = () => {
         <header className="header" id="header">
             <nav className="nav container">
                 <Link to='/' className="nav__logo flexy">
-                <img className='nav__logo-img' src={lechonk} alt="" />
-                {/* Expen$e Tracker */}
-                Lechonk
+                    <img className='nav__logo-img' src={lechonk} alt="" />
+                    {/* Expen$e Tracker */}
+                    Lechonk
                 </Link>
                 <div className="nav__menu" id="nav-menu">
                     <ul className="nav__list grid">
@@ -51,7 +65,7 @@ const Navbar = () => {
                                 <i class="uil uil-notes nav__icon"></i>Notebook
                             </NavLink>
                         </li>
-                        
+
                         <li className="nav__item">
                             <NavLink
                                 onClick={() => { linkAction(); }}
@@ -62,17 +76,33 @@ const Navbar = () => {
                                 <i class="uil uil-pizza-slice nav__icon"></i>Layout
                             </NavLink>
                         </li>
-                        
-                        <li className="nav__item">
-                            <NavLink
-                                onClick={() => { linkAction(); }}
-                                activeClass="active"
-                                exact
-                                to="/login"
-                                className="nav__link">
-                                <i class="uil uil-sign-in nav__icon"></i>Login
-                            </NavLink>
-                        </li>
+                        {
+                            currentUser === null ?
+
+                                <li className="nav__item">
+                                    <NavLink
+                                        onClick={() => { linkAction(); }}
+                                        activeClass="active"
+                                        exact
+                                        to="/login"
+                                        className="nav__link">
+                                        <i class="uil uil-sign-in-alt nav__icon"></i>Login
+                                    </NavLink>
+                                </li>
+                                :
+
+                                <li className="nav__item">
+                                    <span
+                                        onClick={() => { 
+                                            linkAction();
+                                            logout();
+                                        }}
+                                        className="nav__link">
+                                        <i class="uil uil-sign-out-alt nav__icon"></i>Logout
+                                    </span>
+                                </li>
+                        }
+
                     </ul>
 
                     <i
