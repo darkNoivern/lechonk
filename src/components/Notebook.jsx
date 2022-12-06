@@ -1,7 +1,24 @@
 import React, { useState } from 'react'
 import '../styles/notebook.css'
+
 const Notebook = () => {
+
     const [openModal, setOpenModal] = useState(false);
+    const [categories, setCategories] = useState([]);
+    const [current, setCurrent] = useState("");
+
+    const submitCategory = () => {
+        setCategories(categories => [...categories, current])
+        setCurrent("");
+    }
+
+    const delCategory = (index) => {
+        const arr = categories.filter((category, i) => {
+            return (i !== index);
+        });
+        setCategories(arr);
+    }
+
     return (
         <>
             <section className="section">
@@ -49,14 +66,13 @@ const Notebook = () => {
                             {
                                 openModal &&
                                 <div className="services__modal">
-                                    <div className="services__modal-content">
+                                    <div className="services__modal-content notebook__modal-content">
                                         <h4 className="services__modal-title">
                                             New <br /> Notebook
                                         </h4>
                                         <i
                                             onClick={() => {
                                                 setOpenModal(false);
-                                                console.log('frontend')
                                             }}
                                             className="uil uil-times services__modal-close"></i>
                                         <form action="" className="services__form grid">
@@ -68,25 +84,41 @@ const Notebook = () => {
                                                 <label for="" className="services__label">Notebook Description</label>
                                                 <input type="text" className="services__input" />
                                             </div>
+                                            Add max 7 extra categories
+                                            <div className="category__storage grid">
+                                                {
+                                                    categories.map((category, index) => {
+                                                        return (
+                                                            <>
+                                                                <span className='category__span' key={index}>
+                                                                    {category}
+                                                                    <i
+                                                                        onClick={() => { delCategory(index) }}
+                                                                        class="uil uil-times firstColor"></i></span>
+                                                            </>
+                                                        )
+                                                    })
+                                                }
+                                                <span className='category__span'>Others</span>
+                                            
+                                            </div>
+
+                                            <div className="grid grid2">
+                                                <div className='services__form-content'>
+
+                                                    <label for="" className="services__label">Add Categories</label>
+                                                    <input
+                                                        value={current}
+                                                        onChange={(event) => { setCurrent(event.target.value) }}
+                                                        className='services__input' type="text" />
+                                                </div>
+                                                <span
+                                                    onClick={() => { submitCategory(); }}
+                                                    className='flexy button'>Add</span>
+                                            </div>
+                                            <span className="flexy button">Submit</span>
                                         </form>
-                                        {/* <ul className="services__modal-services grid">
 
-                                            <li className="services__modal-service">
-                                                <i className="services__modal-icon uil uil-check-circle"></i>
-                                                <p>I design & develop the interface.</p>
-                                            </li>
-
-                                            <li className="services__modal-service">
-                                                <i className="services__modal-icon uil uil-check-circle"></i>
-                                                <p>I use modern framework ReactJS to make dynamic websites.</p>
-                                            </li>
-
-                                            <li className="services__modal-service">
-                                                <i className="services__modal-icon uil uil-check-circle"></i>
-                                                <p>Have experience using many frameworks and packages to make the website lively.</p>
-                                            </li>
-
-                                        </ul> */}
                                     </div>
                                 </div>
                             }

@@ -1,0 +1,21 @@
+.category__storage{
+    grid-template-columns: repeat(3,1fr) !important;
+}
+
+.category__span{
+    /* display: inline-block; */
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem 0.5rem;
+    border-radius: 1rem;
+    background-color: var(--body-color);
+    border: 1px solid var(--first-color);
+}
+
+.firstColor{
+    color: var(--first-color);
+}
+
+.notebook__modal-content{
+    max-width: min(30rem, 95vw) !important;
+}

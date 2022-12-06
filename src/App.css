@@ -1287,9 +1287,9 @@ img {
     padding: 6rem 0 2rem 2.5rem;
   }
 
-  .services__modal-content {
+  /* .services__modal-content {
     width: 450px;
-  }
+  } */
 
   .portfolio__img {
     width: 320px;
@@ -1404,9 +1404,9 @@ img {
 }
 
 .flexy{
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
 }
 
 body{
