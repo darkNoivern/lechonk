@@ -6,6 +6,7 @@ import Contact from './Contact';
 import Balance from './Balance';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './Layout';
+import Login from './Login';
 const Index = () => {
     return (
         <>
@@ -14,7 +15,7 @@ const Index = () => {
                 <Routes>
                     <Route exact path="/" element={<Home />} />
                     <Route exact path="/notebook" element={<Notebook />} />
-                    <Route exact path="/contact" element={<Contact />} />
+                    <Route exact path="/login" element={<Login />} />
                     <Route exact path="/layout" element={<Layout />} />
                 </Routes>
             </Router>

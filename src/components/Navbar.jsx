@@ -62,6 +62,17 @@ const Navbar = () => {
                                 <i class="uil uil-pizza-slice nav__icon"></i>Layout
                             </NavLink>
                         </li>
+                        
+                        <li className="nav__item">
+                            <NavLink
+                                onClick={() => { linkAction(); }}
+                                activeClass="active"
+                                exact
+                                to="/login"
+                                className="nav__link">
+                                <i class="uil uil-sign-in nav__icon"></i>Login
+                            </NavLink>
+                        </li>
                     </ul>
 
                     <i
