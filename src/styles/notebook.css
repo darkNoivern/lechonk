@@ -1,8 +1,8 @@
-.category__storage{
-    grid-template-columns: repeat(3,1fr) !important;
+.category__storage {
+    grid-template-columns: repeat(3, 1fr) !important;
 }
 
-.category__span{
+.category__span {
     /* display: inline-block; */
     display: flex;
     justify-content: space-between;
@@ -12,10 +12,22 @@
     border: 1px solid var(--first-color);
 }
 
-.firstColor{
+.firstColor {
     color: var(--first-color);
 }
 
-.notebook__modal-content{
+.notebook__modal-content {
     max-width: min(30rem, 95vw) !important;
+}
+
+.notebook__submit {
+    font-family: 'Poppins', sans-serif !important;
+    display: inline-block !important;
+    background-color: var(--first-color);
+    color: #fff;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-size: var(--normal-font-size);
+    font-weight: var(--font-medium);
+    border: none;
 }

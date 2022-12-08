@@ -8,7 +8,6 @@ import { signOut } from "firebase/auth";
 const Navbar = () => {
     
     const { currentUser } = useContext(AuthContext)
-    console.log('Index.jsx', currentUser);
     
     const logout = () => {
         signOut(auth).then(() => {
@@ -60,13 +59,13 @@ const Navbar = () => {
                                 onClick={() => { linkAction(); }}
                                 activeclassname="active"
                                 exact
-                                to="/notebook"
+                                to="/notebooks"
                                 className="nav__link">
-                                <i class="uil uil-notes nav__icon"></i>Notebook
+                                <i class="uil uil-notes nav__icon"></i>Notebooks
                             </NavLink>
                         </li>
 
-                        <li className="nav__item">
+                        {/* <li className="nav__item">
                             <NavLink
                                 onClick={() => { linkAction(); }}
                                 activeClass="active"
@@ -75,7 +74,7 @@ const Navbar = () => {
                                 className="nav__link">
                                 <i class="uil uil-pizza-slice nav__icon"></i>Layout
                             </NavLink>
-                        </li>
+                        </li> */}
                         {
                             currentUser === null ?
 
