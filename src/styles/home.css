@@ -16,14 +16,13 @@
 }
 
 .style__home {
-    padding: var(--mb-3) 0;
+    padding: var(--mb-1-5) 0;
 }
 
 @media screen and (max-width: 350px) {
     .home_container_dialogue {
-        min-height: 15rem;
+        /* min-height: 15rem; */
     }
-
     /* .home__container {
         grid-template-columns: repeat(1, 1fr) !important;
         justify-content: center;
@@ -45,5 +44,8 @@
     .home__container {
         grid-template-columns: repeat(2, 1fr) !important;
         justify-content: center;
+    }
+    .style__home {
+        padding: var(--mb-3) 0;
     }
 }

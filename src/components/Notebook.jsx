@@ -41,6 +41,11 @@ const Notebook = () => {
         });
     });
 
+    
+    function isAlphanumeric(str) {
+        return /^[a-z0-9]+$/i.test(str)
+    }
+
 
     //  add 
     const addNotebook = (event) => {
@@ -110,20 +115,6 @@ const Notebook = () => {
                         })
                     }
 
-                    {/* <div>
-                        <div className="services__content">
-                            <div>
-                                <i className="uil uil-notes services__icon"></i>
-                                <h3 className="services__title">Daily <br /> Expenses</h3>
-                            </div>
-                            <span
-                                className="button button--flex button--small button--link services__button">
-                                View More
-                                <i className="uil uil-arrow-right button__icon"></i>
-                            </span>
-                        </div>
-                    </div>
-                     */}
                     <div>
                         <div className="services__content">
                             <div>

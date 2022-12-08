@@ -97,5 +97,7 @@
 .layout__cards__container{
     gap: 0.5rem;
     /* grid-template-columns: repeat(1, 1fr) !important; */
-    justify-content: center;
+    /* justify-content: center; */
+    margin-left: var(--mb-1);
+    margin-right: var(--mb-1);
 }

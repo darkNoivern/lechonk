@@ -170,7 +170,7 @@
 }
 
 .calendar__button__container{
-    padding: 0 2.8rem;
+    padding: 0 1rem;
     display: flex;
     justify-content: space-between;
 }
