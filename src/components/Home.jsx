@@ -5,7 +5,7 @@ import '../styles/home.css'
 const Home = () => {
     return (
         <>
-            <section className="section">
+            <section className="section home__section">
                 <div className="container style__home grid home__container">
                     <div className='flexy home_container_dialogue'>
                         Money moves from those who don't manage it to those who do;

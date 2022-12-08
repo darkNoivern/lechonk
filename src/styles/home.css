@@ -19,14 +19,10 @@
     padding: var(--mb-1-5) 0;
 }
 
-@media screen and (max-width: 350px) {
-    .home_container_dialogue {
-        /* min-height: 15rem; */
+@media screen and (max-width: 567px) {
+    .home__section{
+        padding-bottom: 2rem;
     }
-    /* .home__container {
-        grid-template-columns: repeat(1, 1fr) !important;
-        justify-content: center;
-    } */
 }
 
 @media screen and (min-width: 568px) {
