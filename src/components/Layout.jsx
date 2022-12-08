@@ -104,7 +104,7 @@ const NewBalance = () => {
 
                         <section className="balance section">
 
-                            <div className="services__container mb-3 container grid grid2">
+                            <div className="services__container mb-3 container grid layout__cards__container grid2">
                                 <div className="flexy second__color p2">
                                     <div>
                                         <h2 className="section__title bigger__text">{notebookName.charAt(0).toUpperCase() + notebookName.slice(1)}</h2>

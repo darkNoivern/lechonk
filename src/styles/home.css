@@ -9,20 +9,21 @@
     grid-template-columns: repeat(1, 1fr) !important;
 }
 
-.home_container_dialogue{
-    min-height: 17rem;
+.home_container_dialogue {
+    min-height: 15rem;
     font-size: var(--big-font-size);
     font-weight: var(--font-semi-bold);
 }
 
-.style__home{
+.style__home {
     padding: var(--mb-3) 0;
 }
 
 @media screen and (max-width: 350px) {
-    .home_container_dialogue{
+    .home_container_dialogue {
         min-height: 15rem;
     }
+
     /* .home__container {
         grid-template-columns: repeat(1, 1fr) !important;
         justify-content: center;
@@ -30,8 +31,13 @@
 }
 
 @media screen and (min-width: 568px) {
-    .home_container_dialogue{
-        min-height: 20rem;
+    .home_container_dialogue {
+        min-height: 22rem;
+    }
+
+    .style__home {
+        padding: var(--mb-3) 0;
+        height: 70vh;
     }
 }
 

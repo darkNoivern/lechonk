@@ -93,3 +93,9 @@
 .p2{
     padding: 1.25rem 0;
 }
+
+.layout__cards__container{
+    gap: 0.5rem;
+    /* grid-template-columns: repeat(1, 1fr) !important; */
+    justify-content: center;
+}

@@ -65,7 +65,7 @@ const Login = () => {
 
     return (
         <>
-            <section className="section flexy">
+            <section className="section login__page flexy">
                 <div className="login__main">
 
                     <input type="checkbox" id="chk" aria-hidden="true" />
