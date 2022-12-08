@@ -66,7 +66,7 @@ const NewBalance = () => {
             setNotebook(result)
             if (result.length > 0) {
                 setTransaction(result[0].transactions)
-                
+
                 const arr = new Array(1).fill(0);
                 result[0].transactions.forEach((transaction) => {
                     arr[0] += parseInt(transaction.amount);
@@ -105,7 +105,7 @@ const NewBalance = () => {
                         <section className="balance section">
 
                             <div className="services__container mb-3 container grid layout__cards__container grid2">
-                                
+
                                 <div className="flexy second__color p2">
                                     <div>
                                         <h2 className="section__title bigger__text">{notebookName.charAt(0).toUpperCase() + notebookName.slice(1)}</h2>
@@ -235,37 +235,44 @@ const NewBalance = () => {
                                         {
                                             transaction.map((element, index) => {
                                                 return (
+                                                    <>
+                                                    {(!(index !== 0 && ((transaction[index].date === transaction[index - 1].date) && (transaction[index].month === transaction[index - 1].month) && (transaction[index].year === transaction[index - 1].year))) &&
+                                                    <div className="flexy mt1">
+                                                        {`${element.date}/${element.month + 1}/${element.year}`}
+                                                    </div>
+                                                )}
+
                                                     <div className="flexy">
-                                                        <div className="balance__transaction__content poke">
-                                                            <div
-                                                                onClick={() => { spinner(index); }}
-                                                                className="transaction__card sp-card">
-                                                                <div className="main__card front">
-                                                                    <div className='transaction__ transaction__top'>
-                                                                        <i
-                                                                            onClick={() => { deleteTransaction(index) }}
-                                                                            class="uil uil-trash-alt delete__button"></i>
-                                                                        <div className="category-style flexy py-1 px-2">
-                                                                            <div className={`pokemon-tag mx-2`}></div>
-                                                                            <div>{element.category.charAt(0).toUpperCase() + element.category.slice(1)}</div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className='transaction__ transaction__back'>
-                                                                        <span>{element.reason.charAt(0).toUpperCase() + element.reason.slice(1)}</span>
-                                                                        <span>₹ {element.amount}</span>
+                                                    <div className="balance__transaction__content poke">
+                                                        <div
+                                                            onClick={() => { spinner(index); }}
+                                                            className="transaction__card sp-card">
+                                                            <div className="main__card front">
+                                                                <div className='transaction__ transaction__top'>
+                                                                    <i
+                                                                        onClick={() => { deleteTransaction(index) }}
+                                                                        class="uil uil-trash-alt delete__button"></i>
+                                                                    <div className="category-style flexy py-1 px-2">
+                                                                        <div className={`pokemon-tag mx-2`}></div>
+                                                                        <div>{element.category.charAt(0).toUpperCase() + element.category.slice(1)}</div>
                                                                     </div>
                                                                 </div>
-                                                                <div className="main__card back">
-                                                                    {element.description.charAt(0).toUpperCase() + element.description.slice(1)}
+                                                                <div className='transaction__ transaction__back'>
+                                                                    <span>{element.reason.charAt(0).toUpperCase() + element.reason.slice(1)}</span>
+                                                                    <span>₹ {element.amount}</span>
                                                                 </div>
-
                                                             </div>
-                                                        </div>
+                                                            <div className="main__card back">
+                                                                {element.description.charAt(0).toUpperCase() + element.description.slice(1)}
+                                                            </div>
 
+                                                        </div>
                                                     </div>
 
-                                                )
-                                            })
+                                                </div>
+</>
+                                            )
+                                        })
                                         }
                                     </>
                                 }
