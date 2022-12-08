@@ -5,20 +5,14 @@ import Home from './Home';
 import Notebook from './Notebook';
 import '../styles/balance.css'
 import '../styles/calendar.css'
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './Layout';
 import Login from './Login';
+import Error from '../error/Error'
+
 const Index = () => {
 
     const { currentUser } = useContext(AuthContext);
-
-    const ProtectedRoute = ({ children }) => {
-        if (!currentUser) {
-            return <Navigate to={`/login`} />;
-        }
-
-        return children;
-    };
 
     return (
         <>
@@ -30,6 +24,7 @@ const Index = () => {
                     <Route exact path="/login" element={<Login />} />
                     {/* <Route exact path="/layout" element={<Layout />} /> */}
                     <Route exact path={`/notebook/:username/:notebook`} element={currentUser ? <Layout /> : <Login />} />
+                    <Route path= '*' element={<Error />} />
                 </Routes>
             </Router>
         </>

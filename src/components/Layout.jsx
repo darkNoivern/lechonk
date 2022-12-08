@@ -105,19 +105,19 @@ const NewBalance = () => {
                         <section className="balance section">
 
                             <div className="services__container mb-3 container grid grid2">
-                                <div className="flexy">
+                                <div className="flexy second__color p2">
                                     <div>
                                         <h2 className="section__title bigger__text">{notebookName.charAt(0).toUpperCase() + notebookName.slice(1)}</h2>
                                         <span className="section__subtitle less__margin__subtitle">{notebook[0].description}</span>
                                     </div>
                                 </div>
 
-                                <div className='flexy'>
+                                <div className='flexy second__color p2'>
                                     <div>
 
                                         <h2 className="section__title fontWeightNormal">Timeline</h2>
                                         <span className="section__subtitle less__margin__subtitle">Get details of current balance here</span>
-                                        <div className="services__container container grid marginBottom3">
+                                        <div className="services__container container grid">
                                             <div
                                                 onClick={() => { setOpenCalendar(true); }}
                                                 className="button calendar__open__button">
@@ -243,9 +243,9 @@ const NewBalance = () => {
                                                                     <div className='transaction__ transaction__top'>
                                                                         <i
                                                                             onClick={() => { deleteTransaction(index) }}
-                                                                            class="uil uil-times-circle delete__button"></i>
+                                                                            class="uil uil-trash-alt delete__button"></i>
                                                                         <div className="category-style flexy py-1 px-2">
-                                                                            <div className={`pokemon-tag bg-purple-400 mx-2`}></div>
+                                                                            <div className={`pokemon-tag mx-2`}></div>
                                                                             <div>{element.category}</div>
                                                                         </div>
                                                                     </div>

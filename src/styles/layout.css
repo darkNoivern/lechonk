@@ -80,3 +80,16 @@
 .add__form{
     max-width: 30rem;
 }
+
+.second__color{
+    
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.uil-trash-alt{
+    font-size: 1.1rem;
+}
+
+.p2{
+    padding: 1.25rem 0;
+}
