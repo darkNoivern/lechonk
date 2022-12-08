@@ -27,7 +27,7 @@ const Notebook = () => {
     const [notebooks, setNotebooks] = useState([]);
 
     const [error, setError] = useState(false);
-
+    const [lengthError, setLengthError] = useState(false);
     const [notebookError, setNotebookError] = useState(false);
 
     const blogsCollectionRef = collection(db, `users/${currentUser.uid}/notebooks`);
@@ -91,7 +91,12 @@ const Notebook = () => {
     const submitCategory = () => {
         if (!categories.includes(current)) {
             if (isCategory(current)) {
-                setCategories(categories => [...categories, current])
+                if(categories.length<7){
+                    setCategories(categories => [...categories, current])
+                }
+                else{
+                    setLengthError(true);
+                }
             }
             else {
                 setError(true);
@@ -223,6 +228,26 @@ const Notebook = () => {
                                                         <i
                                                             onClick={() => {
                                                                 setError(false);
+                                                                setCurrent("");
+                                                            }}
+                                                            className="uil uil-times error_close">
+                                                        </i>
+                                                    </div>
+                                                </div>
+
+                                            }
+
+                                            
+                                            {
+                                                lengthError &&
+                                                <div className="info flex_space_between">
+                                                    <div>
+                                                        <i class="uil uil-user-exclamation info__icon"></i> Only 7 extra categories allowed 😅
+                                                    </div>
+                                                    <div className='flexy'>
+                                                        <i
+                                                            onClick={() => {
+                                                                setLengthError(false);
                                                                 setCurrent("");
                                                             }}
                                                             className="uil uil-times error_close">
