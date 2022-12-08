@@ -105,10 +105,11 @@ const NewBalance = () => {
                         <section className="balance section">
 
                             <div className="services__container mb-3 container grid layout__cards__container grid2">
+                                
                                 <div className="flexy second__color p2">
                                     <div>
                                         <h2 className="section__title bigger__text">{notebookName.charAt(0).toUpperCase() + notebookName.slice(1)}</h2>
-                                        <span className="section__subtitle less__margin__subtitle">{notebook[0].description}</span>
+                                        <span className="section__subtitle less__margin__subtitle">{notebook[0].description.charAt(0).toUpperCase() + notebook[0].description.slice(1)}</span>
                                     </div>
                                 </div>
 
@@ -246,16 +247,16 @@ const NewBalance = () => {
                                                                             class="uil uil-trash-alt delete__button"></i>
                                                                         <div className="category-style flexy py-1 px-2">
                                                                             <div className={`pokemon-tag mx-2`}></div>
-                                                                            <div>{element.category}</div>
+                                                                            <div>{element.category.charAt(0).toUpperCase() + element.category.slice(1)}</div>
                                                                         </div>
                                                                     </div>
                                                                     <div className='transaction__ transaction__back'>
-                                                                        <span>{element.reason}</span>
+                                                                        <span>{element.reason.charAt(0).toUpperCase() + element.reason.slice(1)}</span>
                                                                         <span>₹ {element.amount}</span>
                                                                     </div>
                                                                 </div>
                                                                 <div className="main__card back">
-                                                                    {element.description}
+                                                                    {element.description.charAt(0).toUpperCase() + element.description.slice(1)}
                                                                 </div>
 
                                                             </div>

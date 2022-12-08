@@ -31,3 +31,14 @@
     font-weight: var(--font-medium);
     border: none;
 }
+
+.info{
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    background-color: var(--body-color);
+}
+
+.info__icon, .error_close{
+    color: var(--first-color);
+    font-size: var(--h3-font-size);
+}

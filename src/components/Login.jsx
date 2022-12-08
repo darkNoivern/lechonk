@@ -1,9 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import '../styles/login.css'
 import { createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from "firebase/auth";
-import { auth, db, storage } from "../firebase.config";
-import { doc, setDoc } from "firebase/firestore";
-import { useNavigate, Link } from "react-router-dom";
+import { auth, db } from "../firebase.config";
+import { useNavigate } from "react-router-dom";
+import {
+    collection,
+    onSnapshot,
+    doc,
+    setDoc,
+} from "firebase/firestore";
 
 const Login = () => {
 
@@ -14,11 +19,60 @@ const Login = () => {
     const [email2, setEmail2] = useState("");
     const [password2, setPassword2] = useState("");
 
+    const [illegalUsername, setIllegalUsername] = useState(false);
+    const [usernamePresent, setUsernamePresent] = useState(false);
+    const [emailPresent, setEmailPresent] = useState(false);
+    const [error, setError] = useState(false);
+
+    const [userlist, setUserlist] = useState([]);
+
     const navigate = useNavigate();
 
+    function isAlphanumeric(str) {
+        return /^[a-zA-Z0-9]+$/i.test(str)
+    }
+
+    const usersCollectionRef = collection(db, "users");
+    useEffect(() => {
+        onSnapshot(usersCollectionRef, (snapshot) => {
+
+            const result = snapshot.docs.map((doc) => {
+                return {
+                    id: doc.id,
+                    ...doc.data()
+                };
+            })
+            setUserlist(result);
+            // console.log(result)
+        });
+    }, []);
+
     const signup = (event) => {
+
         event.preventDefault();
-        console.log(username, email, password)
+
+        if (!isAlphanumeric(username)) {
+            setIllegalUsername(true);
+            return;
+        }
+        
+        const checkUsernamePresent = userlist.find((individual) => {
+            return (individual.displayName === username);
+        })
+        if (checkUsernamePresent !== undefined) {  //  USERNAME FOUND
+            setUsernamePresent(true);
+            return;
+        }
+
+        const checkEmailPresent = userlist.find((individual) => {
+            return (individual.email === email);
+        })
+        if (checkEmailPresent !== undefined) {  //  USERNAME FOUND
+            setEmailPresent(true);
+            return;
+        }
+
+
         createUserWithEmailAndPassword(auth, email, password)
             .then((result) => {
                 // Signed in 
@@ -26,8 +80,6 @@ const Login = () => {
                 updateProfile(result.user, {
                     displayName: username,
                 });
-
-                console.log(result);
 
                 setDoc(doc(db, "users", result.user.uid), {
                     uid: result.user.uid,
@@ -40,6 +92,11 @@ const Login = () => {
                 // ...
             })
             .catch((error) => {
+                setError(true);
+                setUsername("");
+                setPassword("");
+                setEmail("");
+                return;
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 console.log(errorCode, errorMessage);
@@ -60,15 +117,102 @@ const Login = () => {
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
+                setError(true);
+                setEmail2("");
+                setPassword2("");
+                return;
             });
     }
 
     return (
         <>
             <section className="section login__page flexy">
-                <div className="login__main">
 
-                    <input type="checkbox" id="chk" aria-hidden="true" />
+                {
+                    illegalUsername &&
+                    <div className="services__modal">
+                        <div className="services__modal-content login__error__modal-content">
+                            <h4 className="services__modal-title">Lechonk <br /> Guidelines</h4>
+                            <i
+                                onClick={() => {
+                                    setIllegalUsername(false);
+                                    setUsername("");
+                                }}
+                                className="uil uil-times services__modal-close">
+                            </i>
+                            <div>
+                                Username should only contain a-z, A-Z, 0-9 and no spaces.
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                {
+                    usernamePresent &&
+                    <div className="services__modal">
+                        <div className="services__modal-content login__error__modal-content">
+                            <h4 className="services__modal-title">Lechonk <br /> Guidelines</h4>
+                            <i
+                                onClick={() => {
+                                    setUsernamePresent(false);
+                                    setUsername("");
+                                }}
+                                className="uil uil-times services__modal-close">
+                            </i>
+                            <div>
+                                This username is already taken, choose a different one please 🥺.
+                            </div>
+                        </div>
+                    </div>
+                }
+                {
+                    emailPresent &&
+                    <div className="services__modal">
+                        <div className="services__modal-content login__error__modal-content">
+                            <h4 className="services__modal-title">Lechonk <br /> Guidelines</h4>
+                            <i
+                                onClick={() => {
+                                    setEmailPresent(false);
+                                    setEmail("");
+                                }}
+                                className="uil uil-times services__modal-close">
+                            </i>
+                            <div>
+                                This email is already in use, choose a different one please 🥺.
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                {
+                    error &&
+                    <div className="services__modal">
+                        <div className="services__modal-content login__error__modal-content">
+                            <h4 className="services__modal-title">Lechonk <br /> Guidelines</h4>
+                            <i
+                                onClick={() => {
+                                    setError(false);
+                                }}
+                                className="uil uil-times services__modal-close">
+                            </i>
+                            <div>
+                                Some error has occured, please retry.
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+                <div className="login__main">
+                    <input
+                        onClick={() => {
+                            setEmail("");
+                            setEmail2("");
+                            setUsername("");
+                            setPassword("");
+                            setPassword2("");
+                        }}
+                        type="checkbox" id="chk" aria-hidden="true" />
                     <div className="signup">
                         <form
                             onSubmit={signup}

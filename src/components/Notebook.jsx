@@ -25,6 +25,11 @@ const Notebook = () => {
     const [notebookName, setNotebookName] = useState("");
     const [notebookDescription, setNotebookDescription] = useState("");
     const [notebooks, setNotebooks] = useState([]);
+
+    const [error, setError] = useState(false);
+
+    const [notebookError, setNotebookError] = useState(false);
+
     const blogsCollectionRef = collection(db, `users/${currentUser.uid}/notebooks`);
     const sortRef = query(blogsCollectionRef, orderBy('createdAt', 'desc'));
 
@@ -41,22 +46,31 @@ const Notebook = () => {
         });
     });
 
-    
-    function isAlphanumeric(str) {
-        return /^[a-z0-9]+$/i.test(str)
+    function isCategory(str) {
+        return /^[a-z ]+$/i.test(str)
     }
 
+    function isAlpha(str) {
+        return /^[a-z]+$/i.test(str)
+    }
 
     //  add 
     const addNotebook = (event) => {
 
         event.preventDefault();
 
+        if (!isAlpha(notebookName)) {
+            setNotebookError(true);
+            return;
+        }
+        const submitCategoryArray = categories;
+        submitCategoryArray.push("others")
+        setCategories(categories => [...categories, "others"])
         const docRef = doc(db, `users/${currentUser.uid}/notebooks/${notebookName}`);
         setDoc(docRef, {
             name: notebookName,
             description: notebookDescription,
-            categories: categories,
+            categories: submitCategoryArray,
             transactions: [],
             createdAt: serverTimestamp(),
         })
@@ -75,7 +89,14 @@ const Notebook = () => {
     }
 
     const submitCategory = () => {
-        setCategories(categories => [...categories, current])
+        if (!categories.includes(current)) {
+            if (isCategory(current)) {
+                setCategories(categories => [...categories, current])
+            }
+            else {
+                setError(true);
+            }
+        }
         setCurrent("");
     }
 
@@ -100,7 +121,7 @@ const Notebook = () => {
                                     <div className="services__content">
                                         <div>
                                             <i className="uil uil-notes services__icon"></i>
-                                            <h3 className="services__title">{notebooki.name} <br /> Expenses</h3>
+                                            <h3 className="services__title">{notebooki.name.charAt(0).toUpperCase() + notebooki.name.slice(1)}<br /> Expenses</h3>
                                         </div>
                                         <Link
                                             to={`/notebook/${currentUser.displayName}/${notebooki.name}`}
@@ -122,7 +143,13 @@ const Notebook = () => {
                                 <h3 className="services__title">Add <br /> Notebook</h3>
                             </div>
                             <span
-                                onClick={() => { setOpenModal(true); }}
+                                onClick={() => {
+                                    setOpenModal(true);
+                                    setCurrent("");
+                                    setCategories([]);
+                                    setNotebookName("");
+                                    setNotebookDescription("");
+                                }}
                                 className="button button--flex button--small button--link services__button">
                                 Add
                                 <i className="uil uil-arrow-right button__icon"></i>
@@ -137,31 +164,81 @@ const Notebook = () => {
                                         <i
                                             onClick={() => {
                                                 setOpenModal(false);
+                                                setCurrent("");
+                                                setCategories([]);
+                                                setNotebookName("");
+                                                setNotebookDescription("");
                                             }}
                                             className="uil uil-times services__modal-close"></i>
                                         <form onSubmit={addNotebook} className="services__form grid">
+
+
+                                            {
+                                                notebookError &&
+                                                <div className="info flex_space_between">
+                                                    <div>
+                                                        <i class="uil uil-user-exclamation info__icon"></i> Only alphabetic letters allowed
+                                                    </div>
+                                                    <div className='flexy'>
+                                                        <i
+                                                            onClick={() => {
+                                                                setNotebookError(false);
+                                                                setNotebookError("");
+                                                            }}
+                                                            className="uil uil-times error_close">
+                                                        </i>
+                                                    </div>
+                                                </div>
+
+                                            }
+
                                             <div class="services__form-content">
                                                 <label for="" className="services__label">Notebook Name</label>
                                                 <input
+                                                    required
                                                     value={notebookName}
-                                                    onChange={(event) => { setNotebookName(event.target.value) }}
+                                                    onChange={(event) => { setNotebookName(event.target.value).toLowerCase() }}
                                                     type="text" className="services__input" />
                                             </div>
                                             <div class="services__form-content">
                                                 <label for="" className="services__label">Notebook Description</label>
                                                 <input
+                                                    required
                                                     value={notebookDescription}
                                                     onChange={(event) => { setNotebookDescription(event.target.value) }}
                                                     type="text" className="services__input" />
                                             </div>
-                                            Add max 7 extra categories
+
+                                            <div className="info">
+                                                <i class="uil uil-user-exclamation info__icon"></i> You can add max 7 extra categories
+                                            </div>
+
+                                            {
+                                                error &&
+                                                <div className="info flex_space_between">
+                                                    <div>
+                                                        <i class="uil uil-user-exclamation info__icon"></i> Only alphabetic letters and spaces allowed
+                                                    </div>
+                                                    <div className='flexy'>
+                                                        <i
+                                                            onClick={() => {
+                                                                setError(false);
+                                                                setCurrent("");
+                                                            }}
+                                                            className="uil uil-times error_close">
+                                                        </i>
+                                                    </div>
+                                                </div>
+
+                                            }
+
                                             <div className="category__storage grid">
                                                 {
                                                     categories.map((category, index) => {
                                                         return (
                                                             <>
                                                                 <span className='category__span' key={index}>
-                                                                    {category}
+                                                                    {category.charAt(0).toUpperCase() + category.slice(1)}
                                                                     <i
                                                                         onClick={() => { delCategory(index) }}
                                                                         class="uil uil-times firstColor"></i></span>
@@ -179,7 +256,7 @@ const Notebook = () => {
                                                     <label for="" className="services__label">Add Categories</label>
                                                     <input
                                                         value={current}
-                                                        onChange={(event) => { setCurrent(event.target.value) }}
+                                                        onChange={(event) => { setCurrent(event.target.value).toLowerCase() }}
                                                         className='services__input' type="text" />
                                                 </div>
                                                 <span
