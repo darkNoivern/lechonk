@@ -16,7 +16,7 @@ const Manage = (props) => {
         labels: labels,
         datasets: [
             {
-                label: '# of Votes',
+                label: 'Expense(in ₹)',
                 data: dataset,
                 // [12, 19, 10, 3, 5, 2, 3, 12].slice(0, len),
                 backgroundColor: [
