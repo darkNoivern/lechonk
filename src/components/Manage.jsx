@@ -50,6 +50,7 @@ const Manage = (props) => {
             <span className="section__subtitle less__margin__subtitle">Get details of current balance here</span>
             <div className="services__container container flexy">
                 <Doughnut
+                    className='chart'
                     height={300}
                     width={400}
                     data={data}

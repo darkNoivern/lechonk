@@ -110,3 +110,8 @@
 .mt1{
     margin-top: var(--mb-1);
 }
+
+.chart{
+    max-height: 40rem;
+    max-width: auto;
+}
