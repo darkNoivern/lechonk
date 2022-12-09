@@ -198,9 +198,9 @@
     top: 0;
     left: 0;
     background-color: var(--bg-main);
-    padding: 20px;
+    /* padding: 20px; */
     grid-template-columns: repeat(3, auto);
-    gap: 5px;
+    /* gap: 5px; */
     display: grid;
     transform: scale(1.5);
     visibility: hidden;
@@ -208,7 +208,7 @@
 }
 
 .month-list.show {
-    transform: scale(1);
+    transform: scale(0.9);
     visibility: visible;
     pointer-events: visible;
     transition: all 0.2s ease-in-out;

@@ -101,7 +101,8 @@ const Calendar = (props) => {
                 console.log(e, index)
                 document.querySelector('.calendar-header').classList.remove('hide__visibility')
                 document.querySelector('.calendar-body').classList.remove('hide__visibility')
-
+                document.querySelector('.calendar__button__container').classList.remove('hide__visibility')
+        
                 curr_month.value = index
                 generateCalendar(index, curr_year.value)
             }
@@ -114,6 +115,7 @@ const Calendar = (props) => {
             month_list.classList.add('show')
             document.querySelector('.calendar-header').classList.add('hide__visibility')
             document.querySelector('.calendar-body').classList.add('hide__visibility')
+            document.querySelector('.calendar__button__container').classList.add('hide__visibility')
         }
 
         let currDate = new Date()
@@ -142,7 +144,7 @@ const Calendar = (props) => {
                     <div className="section__title">Choose Date</div>
                     <i
                         onClick={() => {
-                            props.setOpenCalendar(false);
+                            props.setCalendar(false);
                         }}
                         className="uil uil-times services__modal-close"></i>
                     <div className="flexy">
