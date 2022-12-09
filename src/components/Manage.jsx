@@ -8,9 +8,9 @@ const Manage = (props) => {
     let len = props.notebook.categories.length;
     const labels = props.notebook.categories;
     const dataset = new Array(len).fill(0);
-    props.notebook.transactions.forEach((transaction,index)=>{
-        let ii = labels.indexOf(transaction.category);
-        dataset[ii]+=parseInt(transaction.amount);
+    props.transaction.forEach((pay, index) => {
+        let ii = labels.indexOf(pay.category);
+        dataset[ii] += parseInt(pay.amount);
     })
     const data = {
         labels: labels,

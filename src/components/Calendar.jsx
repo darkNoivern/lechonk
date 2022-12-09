@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import '../styles/calendar.css'// import React and DatePicker
 
-const Calendar = () => {
+const Calendar = (props) => {
 
     const [dataDate, setDataDate] = useState(1);
 
@@ -12,6 +12,25 @@ const Calendar = () => {
         })
         days[date - 1].classList.add('selected__day');
         setDataDate(date);
+    }
+
+    const dateSubmit = () => {
+        const month_names = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+        let di = (new Date()).getDate();
+        if((document.querySelector('.selected__day'))!==null){
+            di = document.querySelector('.selected__day').innerText;
+        }
+        let mi = month_names.indexOf(document.querySelector('.month-picker').innerHTML);
+        let yi = document.querySelector('#year').innerHTML;
+        // let dates = new Date(yi,mi,di);
+        if(props.setType==='start'){
+            props.setDate(new Date(yi,mi,di,0,0,0,0));
+        }
+        else{
+            props.setDate(new Date(yi,mi,di,23,59,59,999));
+        }
+        props.setChoosen(true);
+        props.setCalendar(false);
     }
 
     useEffect(() => {
@@ -118,39 +137,56 @@ const Calendar = () => {
 
     return (
         <>
+            <div className="balance__modal">
+                <div className='modify__calendar__container'>
+                    <div className="section__title">Choose Date</div>
+                    <i
+                        onClick={() => {
+                            props.setOpenCalendar(false);
+                        }}
+                        className="uil uil-times services__modal-close"></i>
+                    <div className="flexy">
+                        <div class="calendar">
+                            <div class="calendar-header ">
+                                <span class="month-picker" id="month-picker">February</span>
+                                <div class="year-picker">
+                                    <span class="year-change" id="prev-year">
+                                        <pre><i className='uil uil-arrow-left'></i></pre>
+                                    </span>
+                                    <span id="year">2021</span>
+                                    <span class="year-change" id="next-year">
+                                        <pre><i className='uil uil-arrow-right'></i></pre>
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="flexy">
 
-            <div class="calendar">
-                <div class="calendar-header ">
-                    <span class="month-picker" id="month-picker">February</span>
-                    <div class="year-picker">
-                        <span class="year-change" id="prev-year">
-                            <pre><i className='uil uil-arrow-left'></i></pre>
-                        </span>
-                        <span id="year">2021</span>
-                        <span class="year-change" id="next-year">
-                            <pre><i className='uil uil-arrow-right'></i></pre>
-                        </span>
-                    </div>
-                </div>
-                <div className="flexy">
+                                <div class="calendar-body">
+                                    <div class="calendar-week-day grid sevengrid">
+                                        <div>Sun</div>
+                                        <div>Mon</div>
+                                        <div>Tue</div>
+                                        <div>Wed</div>
+                                        <div>Thu</div>
+                                        <div>Fri</div>
+                                        <div>Sat</div>
+                                    </div>
+                                    <div class="calendar-days grid sevengrid"></div>
+                                </div>
+                            </div>
 
-                    <div class="calendar-body">
-                        <div class="calendar-week-day grid sevengrid">
-                            <div>Sun</div>
-                            <div>Mon</div>
-                            <div>Tue</div>
-                            <div>Wed</div>
-                            <div>Thu</div>
-                            <div>Fri</div>
-                            <div>Sat</div>
+                            <div class="month-list"></div>
+                            <div className='calendar__button__container grid'>
+                                <button
+                                    onClick={() => {
+                                        dateSubmit(); 
+                                    }}
+                                    className="button custom__button">Submit</button>
+                            </div>
                         </div>
-                        <div class="calendar-days grid sevengrid"></div>
                     </div>
                 </div>
-
-                <div class="month-list"></div>
             </div>
-
         </>
     )
 }

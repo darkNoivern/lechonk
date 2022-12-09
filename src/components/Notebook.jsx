@@ -33,7 +33,7 @@ const Notebook = () => {
     const blogsCollectionRef = collection(db, `users/${currentUser.uid}/notebooks`);
     const sortRef = query(blogsCollectionRef, orderBy('createdAt', 'desc'));
 
-    useEffect(() => {
+    // useEffect(() => {
         onSnapshot(sortRef, (snapshot) => {
             setNotebooks(
                 snapshot.docs.map((doc) => {
@@ -44,7 +44,7 @@ const Notebook = () => {
                 })
             );
         });
-    });
+    // });
 
     function isCategory(str) {
         return /^[a-z ]+$/i.test(str)

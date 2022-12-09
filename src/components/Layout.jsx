@@ -40,42 +40,56 @@ const NewBalance = () => {
     const [total, setTotal] = useState(0);
 
     //  segments
-    const [openCalendar, setOpenCalendar] = useState(false);
+    const [openStartCalendar, setOpenStartCalendar] = useState(false);
+    const [openEndCalendar, setOpenEndCalendar] = useState(false);
+
     const [balance, setBalance] = useState(true);
     const [transactionTab, setTransactionTab] = useState(false);
     const [manage, setManage] = useState(false);
     const [add, setAdd] = useState(false);
 
+    const defaultStart = new Date(1950, 0, 1, 0, 0, 0, 0);
+    const defaultEnd = new Date(2050, 11, 31, 23, 59, 59, 999);
+    const [startDate, setStartDate] = useState(defaultStart);
+    const [endDate, setEndDate] = useState(defaultEnd);
+    const [startChoosen, setStartChoosen] = useState(false);
+    const [endChoosen, setEndChoosen] = useState(false);
 
     const notebooksCollectionRef = collection(db, `users/${currentUser.uid}/notebooks`);
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        onSnapshot(notebooksCollectionRef, (snapshot) => {
-            const notebooks = snapshot.docs.map((doc) => {
-                return {
-                    id: doc.id,
-                    ...doc.data()
-                };
-            })
+    onSnapshot(notebooksCollectionRef, (snapshot) => {
+        const notebooks = snapshot.docs.map((doc) => {
+            return {
+                id: doc.id,
+                ...doc.data()
+            };
+        })
 
-            const result = notebooks.filter((element, index) => {
-                return (element.name === notebookName);
-            })
+        const result = notebooks.filter((element, index) => {
+            return (element.name === notebookName);
+        })
 
-            setNotebook(result)
-            if (result.length > 0) {
-                setTransaction(result[0].transactions)
-
-                const arr = new Array(1).fill(0);
-                result[0].transactions.forEach((transaction) => {
-                    arr[0] += parseInt(transaction.amount);
+        setNotebook(result)
+        if (result.length > 0) {
+            setTransaction(
+                result[0].transactions.filter((pay, index) => {
+                    return ((new Date(pay.fulldate.seconds * 1000)) >= startDate && (new Date(pay.fulldate.seconds * 1000)) <= endDate)
                 })
-                setTotal(arr[0])
-            }
-        });
+            )
 
+            const arr = new Array(1).fill(0);
+            result[0].transactions.forEach((pay) => {
+                if (((new Date(pay.fulldate.seconds * 1000)) >= startDate && (new Date(pay.fulldate.seconds * 1000)) <= endDate)) {
+                    arr[0] += parseInt(pay.amount);
+                }
+            })
+            setTotal(arr[0])
+        }
     });
+
+    // },[]);
     const spinner = (index) => {
         document.querySelectorAll(".sp-card")[index].classList.toggle("voltorb");
     };
@@ -120,35 +134,33 @@ const NewBalance = () => {
                                         <span className="section__subtitle less__margin__subtitle">Get details of current balance here</span>
                                         <div className="services__container container grid">
                                             <div
-                                                onClick={() => { setOpenCalendar(true); }}
-                                                className="button calendar__open__button">
-                                                Start Date
+                                                onClick={() => { setOpenStartCalendar(true); }}
+                                                className="button calendar__open__button flexy">
+                                                {/* {console.log(startDate,defaultStart,startDate===defaultStart)} */}
+                                                {!startChoosen ? "Start Date" : `${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()}`}
                                             </div>
                                             <div
-                                                onClick={() => { setOpenCalendar(true); }}
-                                                className="button calendar__open__button">
-                                                End Date
+                                                onClick={() => { setOpenEndCalendar(true); }}
+                                                className="button calendar__open__button flexy">
+                                                {!endChoosen ? "End Date" : `${endDate.getDate()}/${endDate.getMonth() + 1}/${endDate.getFullYear()}`}
                                             </div>
                                         </div>
                                         {
-                                            openCalendar &&
-                                            <div className="balance__modal">
-                                                <div className='modify__calendar__container'>
-                                                    <div className="section__title">Choose Date</div>
-                                                    <div className="flexy">
+                                            openStartCalendar &&
+                                            <Calendar
+                                                setType={"start"}
+                                                setDate={setStartDate}
+                                                setChoosen={setStartChoosen}
+                                                setCalendar={setOpenStartCalendar} />
+                                        }
 
-                                                        <Calendar />
-                                                    </div>
-                                                    <div className='calendar__button__container'>
-                                                        <button
-                                                            onClick={() => { setOpenCalendar(false); }}
-                                                            className="button custom__button">Submit</button>
-                                                        <button
-                                                            onClick={() => { setOpenCalendar(false); }}
-                                                            className="button custom__button">Close</button>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        {
+                                            openEndCalendar &&
+                                            <Calendar
+                                                setType={"end"}
+                                                setDate={setEndDate}
+                                                setChoosen={setEndChoosen}
+                                                setCalendar={setOpenEndCalendar} />
                                         }
                                     </div>
                                 </div>
@@ -236,50 +248,52 @@ const NewBalance = () => {
                                             transaction.map((element, index) => {
                                                 return (
                                                     <>
-                                                    {(!(index !== 0 && ((transaction[index].date === transaction[index - 1].date) && (transaction[index].month === transaction[index - 1].month) && (transaction[index].year === transaction[index - 1].year))) &&
-                                                    <div className="flexy mt1">
-                                                        {`${element.date}/${element.month + 1}/${element.year}`}
-                                                    </div>
-                                                )}
-
-                                                    <div className="flexy">
-                                                    <div className="balance__transaction__content poke">
-                                                        <div
-                                                            onClick={() => { spinner(index); }}
-                                                            className="transaction__card sp-card">
-                                                            <div className="main__card front">
-                                                                <div className='transaction__ transaction__top'>
-                                                                    <i
-                                                                        onClick={() => { deleteTransaction(index) }}
-                                                                        class="uil uil-trash-alt delete__button"></i>
-                                                                    <div className="category-style flexy py-1 px-2">
-                                                                        <div className={`pokemon-tag mx-2`}></div>
-                                                                        <div>{element.category.charAt(0).toUpperCase() + element.category.slice(1)}</div>
-                                                                    </div>
-                                                                </div>
-                                                                <div className='transaction__ transaction__back'>
-                                                                    <span>{element.reason.charAt(0).toUpperCase() + element.reason.slice(1)}</span>
-                                                                    <span>₹ {element.amount}</span>
-                                                                </div>
+                                                        {(!(index !== 0 && ((transaction[index].date === transaction[index - 1].date) && (transaction[index].month === transaction[index - 1].month) && (transaction[index].year === transaction[index - 1].year))) &&
+                                                            <div className="flexy mt1">
+                                                                {`${element.date}/${element.month + 1}/${element.year}`}
                                                             </div>
-                                                            <div className="main__card back">
-                                                                {element.description.charAt(0).toUpperCase() + element.description.slice(1)}
+                                                        )}
+
+                                                        <div className="flexy">
+                                                            <div className="balance__transaction__content poke">
+                                                                <div
+                                                                    onClick={() => { spinner(index); }}
+                                                                    className="transaction__card sp-card">
+                                                                    <div className="main__card front">
+                                                                        <div className='transaction__ transaction__top'>
+                                                                            <i
+                                                                                onClick={() => { deleteTransaction(index) }}
+                                                                                class="uil uil-trash-alt delete__button"></i>
+                                                                            <div className="category-style flexy py-1 px-2">
+                                                                                <div className={`pokemon-tag mx-2`}></div>
+                                                                                <div>{element.category.charAt(0).toUpperCase() + element.category.slice(1)}</div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className='transaction__ transaction__back'>
+                                                                            <span>{element.reason.charAt(0).toUpperCase() + element.reason.slice(1)}</span>
+                                                                            <span>₹ {element.amount}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="main__card back">
+                                                                        {element.description.charAt(0).toUpperCase() + element.description.slice(1)}
+                                                                    </div>
+
+                                                                </div>
                                                             </div>
 
                                                         </div>
-                                                    </div>
-
-                                                </div>
-</>
-                                            )
-                                        })
+                                                    </>
+                                                )
+                                            })
                                         }
                                     </>
                                 }
                                 {
                                     manage &&
                                     <>
-                                        <Manage notebook={notebook[0]} />
+                                        <Manage
+                                        transaction={transaction} 
+                                        notebook={notebook[0]} />
                                     </>
                                 }
                                 {
