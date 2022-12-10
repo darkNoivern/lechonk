@@ -22,7 +22,7 @@ const Navbar = () => {
 
     const themeChange = () => {
         document.body.classList.toggle(darkTheme)
-        console.log(document.querySelector('.change-theme'))
+        // console.log(document.querySelector('.change-theme'))
         document.querySelector('.change-theme').classList.toggle('uil-moon')
         document.querySelector('.change-theme').classList.toggle('uil-sun')
     }
@@ -30,7 +30,7 @@ const Navbar = () => {
     /*==================== REMOVE MENU MOBILE ====================*/
     const linkAction = () => {
         const navMenu = document.getElementById('nav-menu')
-        console.log(navMenu, 'clicked')
+        // console.log(navMenu, 'clicked')
         navMenu.classList.remove('show-menu')
     }
 

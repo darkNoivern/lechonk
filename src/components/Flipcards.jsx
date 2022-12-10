@@ -1,21 +1,26 @@
 import React, { useState } from 'react'
 
 const Flipcards = (props) => {
+    
     const [spin, setSpin] = useState(false);
+
+    const handleClick = (event) => {
+        if(event.target.classList.contains('delete__button')){
+            props.deleteTransaction(props.index);
+        }
+        else{
+            setSpin(!spin);
+        }
+    }
+
     return (
         <>
             <div className="balance__transaction__content poke">
-                <div
-                onClick={(()=>{setSpin(!spin);})} 
+                <div onClick={handleClick} 
                 className={`transaction__card sp-card ${spin ? "voltorb" : ""}`}>
                     <div className="main__card front">
                         <div className='transaction__ transaction__top'>
-                            <i
-                                onClick={() => { 
-                                    // setSpin(false)
-                                    props.deleteTransaction(props.index);
-                                }}
-                                class="uil uil-trash-alt delete__button"></i>
+                            <i className="uil uil-trash-alt delete__button"></i>
                             <div className="category-style flexy py-1 px-2">
                                 <div className={`pokemon-tag mx-2`}></div>
                                 <div>{props.element.category.charAt(0).toUpperCase() + props.element.category.slice(1)}</div>
