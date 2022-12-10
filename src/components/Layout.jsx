@@ -74,24 +74,36 @@ const NewBalance = () => {
 
             setNotebook(result)
             if (result.length > 0) {
-                setTransaction(
-                    result[0].transactions.filter((pay, index) => {
-                        return ((new Date(pay.fulldate.seconds * 1000)) >= startDate && (new Date(pay.fulldate.seconds * 1000)) <= endDate)
-                    })
-                )
+                setTransaction(result[0].transactions)
 
                 const arr = new Array(1).fill(0);
                 result[0].transactions.forEach((pay) => {
-                    if (((new Date(pay.fulldate.seconds * 1000)) >= startDate && (new Date(pay.fulldate.seconds * 1000)) <= endDate)) {
-                        arr[0] += parseInt(pay.amount);
-                    }
+                    arr[0] += parseInt(pay.amount);
                 })
                 setTotal(arr[0])
             }
         });
 
     }, [currentUser]);
-    
+
+    useEffect(() => {
+        if (notebook.length > 0) {
+            setTransaction(
+                notebook[0].transactions.filter((pay, index) => {
+                    return ((new Date(pay.fulldate.seconds * 1000)) >= startDate && (new Date(pay.fulldate.seconds * 1000)) <= endDate)
+                })
+            )
+
+            const arr = new Array(1).fill(0);
+            notebook[0].transactions.forEach((pay) => {
+                if (((new Date(pay.fulldate.seconds * 1000)) >= startDate && (new Date(pay.fulldate.seconds * 1000)) <= endDate)) {
+                    arr[0] += parseInt(pay.amount);
+                }
+            })
+            setTotal(arr[0])
+        }
+    }, [startChoosen, endChoosen])
+
     // const spinner = (index) => {
     //     document.querySelectorAll(".sp-card")[index].classList.toggle("voltorb");
     // };
@@ -256,7 +268,7 @@ const NewBalance = () => {
                                                         )}
 
                                                         <div className="flexy">
-                                                        <Flipcards element={element} index={index} deleteTransaction={deleteTransaction} />
+                                                            <Flipcards element={element} index={index} deleteTransaction={deleteTransaction} />
 
                                                         </div>
                                                     </>
