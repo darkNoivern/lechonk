@@ -4,6 +4,10 @@
     background-size: contain;
 }
 
+.home__section{
+    height: 100vh;
+}
+
 
 .home__container {
     grid-template-columns: repeat(1, 1fr) !important;

@@ -7,6 +7,7 @@ import Add from './Add';
 import '../styles/layout.css';
 import { db } from "../firebase.config";
 import Nonotebook from '../error/Nonotebook';
+import Flipcards from './Flipcards';
 import Notyou from '../error/Notyou';
 import {
     collection,
@@ -57,53 +58,54 @@ const NewBalance = () => {
 
     const notebooksCollectionRef = collection(db, `users/${currentUser.uid}/notebooks`);
 
-    // useEffect(() => {
+    useEffect(() => {
 
-    onSnapshot(notebooksCollectionRef, (snapshot) => {
-        const notebooks = snapshot.docs.map((doc) => {
-            return {
-                id: doc.id,
-                ...doc.data()
-            };
-        })
-
-        const result = notebooks.filter((element, index) => {
-            return (element.name === notebookName);
-        })
-
-        setNotebook(result)
-        if (result.length > 0) {
-            setTransaction(
-                result[0].transactions.filter((pay, index) => {
-                    return ((new Date(pay.fulldate.seconds * 1000)) >= startDate && (new Date(pay.fulldate.seconds * 1000)) <= endDate)
-                })
-            )
-
-            const arr = new Array(1).fill(0);
-            result[0].transactions.forEach((pay) => {
-                if (((new Date(pay.fulldate.seconds * 1000)) >= startDate && (new Date(pay.fulldate.seconds * 1000)) <= endDate)) {
-                    arr[0] += parseInt(pay.amount);
-                }
+        onSnapshot(notebooksCollectionRef, (snapshot) => {
+            const notebooks = snapshot.docs.map((doc) => {
+                return {
+                    id: doc.id,
+                    ...doc.data()
+                };
             })
-            setTotal(arr[0])
-        }
-    });
 
-    // },[]);
-    const spinner = (index) => {
-        document.querySelectorAll(".sp-card")[index].classList.toggle("voltorb");
-    };
+            const result = notebooks.filter((element, index) => {
+                return (element.name === notebookName);
+            })
+
+            setNotebook(result)
+            if (result.length > 0) {
+                setTransaction(
+                    result[0].transactions.filter((pay, index) => {
+                        return ((new Date(pay.fulldate.seconds * 1000)) >= startDate && (new Date(pay.fulldate.seconds * 1000)) <= endDate)
+                    })
+                )
+
+                const arr = new Array(1).fill(0);
+                result[0].transactions.forEach((pay) => {
+                    if (((new Date(pay.fulldate.seconds * 1000)) >= startDate && (new Date(pay.fulldate.seconds * 1000)) <= endDate)) {
+                        arr[0] += parseInt(pay.amount);
+                    }
+                })
+                setTotal(arr[0])
+            }
+        });
+
+    }, [currentUser]);
+    
+    // const spinner = (index) => {
+    //     document.querySelectorAll(".sp-card")[index].classList.toggle("voltorb");
+    // };
 
     const deleteTransaction = (index) => {
+        // document.querySelectorAll('.sp-card')[index]?.forEach((element, i) => {
+        //     element.classList.remove("voltorb")
+        // })
 
         let setup = notebook[0];
         let arr = notebook[0].transactions;
         arr.splice(index, 1);
         setup.transactions = arr;
         setDoc(doc(db, `users/${currentUser.uid}/notebooks`, `${notebook[0].name}`), setup)
-        document.querySelectorAll('.sp-card').forEach((element, i) => {
-            element.classList.remove("voltorb")
-        })
     }
 
     return (
@@ -136,7 +138,6 @@ const NewBalance = () => {
                                             <div
                                                 onClick={() => { setOpenStartCalendar(true); }}
                                                 className="button calendar__open__button flexy">
-                                                {/* {console.log(startDate,defaultStart,startDate===defaultStart)} */}
                                                 {!startChoosen ? "Start Date" : `${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()}`}
                                             </div>
                                             <div
@@ -255,31 +256,7 @@ const NewBalance = () => {
                                                         )}
 
                                                         <div className="flexy">
-                                                            <div className="balance__transaction__content poke">
-                                                                <div
-                                                                    onClick={() => { spinner(index); }}
-                                                                    className="transaction__card sp-card">
-                                                                    <div className="main__card front">
-                                                                        <div className='transaction__ transaction__top'>
-                                                                            <i
-                                                                                onClick={() => { deleteTransaction(index) }}
-                                                                                class="uil uil-trash-alt delete__button"></i>
-                                                                            <div className="category-style flexy py-1 px-2">
-                                                                                <div className={`pokemon-tag mx-2`}></div>
-                                                                                <div>{element.category.charAt(0).toUpperCase() + element.category.slice(1)}</div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className='transaction__ transaction__back'>
-                                                                            <span>{element.reason.charAt(0).toUpperCase() + element.reason.slice(1)}</span>
-                                                                            <span>₹ {element.amount}</span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="main__card back">
-                                                                        {element.description.charAt(0).toUpperCase() + element.description.slice(1)}
-                                                                    </div>
-
-                                                                </div>
-                                                            </div>
+                                                        <Flipcards element={element} index={index} deleteTransaction={deleteTransaction} />
 
                                                         </div>
                                                     </>
@@ -292,8 +269,8 @@ const NewBalance = () => {
                                     manage &&
                                     <>
                                         <Manage
-                                        transaction={transaction} 
-                                        notebook={notebook[0]} />
+                                            transaction={transaction}
+                                            notebook={notebook[0]} />
                                     </>
                                 }
                                 {

@@ -53,8 +53,6 @@ const Calendar = (props) => {
 
             let days_of_month = [31, getFebDays(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-            console.log(month, month_names[month], year)
-
             calendar_days.innerHTML = ''
 
             let currDate = new Date()
@@ -98,7 +96,6 @@ const Calendar = (props) => {
             month.innerHTML = `<div data-month="${index}">${e}</div>`
             month.querySelector('div').onclick = () => {
                 month_list.classList.remove('show')
-                console.log(e, index)
                 document.querySelector('.calendar-header').classList.remove('hide__visibility')
                 document.querySelector('.calendar-body').classList.remove('hide__visibility')
                 document.querySelector('.calendar__button__container').classList.remove('hide__visibility')

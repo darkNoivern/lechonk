@@ -41,6 +41,7 @@
 
 .category_options{
     padding: 0.25rem 1rem;
+    cursor: pointer;
     background-color: var(--container-color);
 }
 

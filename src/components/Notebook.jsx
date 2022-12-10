@@ -33,18 +33,18 @@ const Notebook = () => {
     const blogsCollectionRef = collection(db, `users/${currentUser.uid}/notebooks`);
     const sortRef = query(blogsCollectionRef, orderBy('createdAt', 'desc'));
 
-    // useEffect(() => {
+    useEffect(() => {
         onSnapshot(sortRef, (snapshot) => {
-            setNotebooks(
-                snapshot.docs.map((doc) => {
-                    return {
-                        id: doc.id,
-                        ...doc.data()
-                    };
-                })
-            );
+            const result = snapshot.docs.map((doc) => {
+                return {
+                    id: doc.id,
+                    ...doc.data()
+                };
+            })
+            setNotebooks(result);
+
         });
-    // });
+    }, [currentUser]);
 
     function isCategory(str) {
         return /^[a-z ]+$/i.test(str)
@@ -91,10 +91,10 @@ const Notebook = () => {
     const submitCategory = () => {
         if (!categories.includes(current)) {
             if (isCategory(current)) {
-                if(categories.length<7){
+                if (categories.length < 7) {
                     setCategories(categories => [...categories, current])
                 }
-                else{
+                else {
                     setLengthError(true);
                 }
             }
@@ -237,7 +237,7 @@ const Notebook = () => {
 
                                             }
 
-                                            
+
                                             {
                                                 lengthError &&
                                                 <div className="info flex_space_between">
