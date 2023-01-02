@@ -286,7 +286,7 @@ const NewBalance = () => {
                                     <>
                                         <h2 className="section__title">Transactions</h2>
                                         <span className="section__subtitle less__margin__subtitle">Get details of past transactions here</span>
-                                        <div className="services__container grid21 container grid marginBottom3">
+                                        <div className="grid21 container grid marginBottom3">
                                             <div>
                                                 <div className='section__title fontWeightNormal mt1'>
                                                     Categories
