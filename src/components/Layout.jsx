@@ -40,6 +40,10 @@ const NewBalance = () => {
     const [transaction, setTransaction] = useState([]);
     const [total, setTotal] = useState(0);
 
+    //  category
+    const [changeCategoryArr, setChangeCategoryArr] = useState([]);
+    const [defaultCategory, setDefaultCategory] = useState([]);
+
     //  segments
     const [openStartCalendar, setOpenStartCalendar] = useState(false);
     const [openEndCalendar, setOpenEndCalendar] = useState(false);
@@ -75,7 +79,6 @@ const NewBalance = () => {
             setNotebook(result)
             if (result.length > 0) {
                 setTransaction(result[0].transactions)
-
                 const arr = new Array(1).fill(0);
                 result[0].transactions.forEach((pay) => {
                     arr[0] += parseInt(pay.amount);
@@ -102,11 +105,38 @@ const NewBalance = () => {
             })
             setTotal(arr[0])
         }
-    }, [startChoosen, endChoosen])
+    }, [startDate, endDate])
 
     // const spinner = (index) => {
     //     document.querySelectorAll(".sp-card")[index].classList.toggle("voltorb");
     // };
+
+
+    const toggleArr = (arr, category) => {
+        var idx = arr.indexOf(category);
+        console.log(idx)
+        if (idx >= 0) {
+            arr.splice(idx, 1);
+        } else {
+            arr.push(category);
+        }
+        return arr;
+    }
+
+    const toggleCategory = (category) => {
+        console.log(category)
+        const arr = changeCategoryArr;
+        console.log(arr)
+        const ansArr = toggleArr(arr, category);
+        setChangeCategoryArr(ansArr)
+        setTransaction(
+            notebook[0].transactions.filter((pay, index) => {
+                return (!ansArr.includes(pay.category))
+            })
+        )
+        console.log('notebook[0].categories', notebook[0].categories)
+    }
+
 
     const deleteTransaction = (index) => {
         // document.querySelectorAll('.sp-card')[index]?.forEach((element, i) => {
@@ -256,25 +286,64 @@ const NewBalance = () => {
                                     <>
                                         <h2 className="section__title">Transactions</h2>
                                         <span className="section__subtitle less__margin__subtitle">Get details of past transactions here</span>
+                                        <div className="services__container grid21 container grid marginBottom3">
+                                            <div>
+                                                <div className='section__title fontWeightNormal mt1'>
+                                                    Categories
+                                                </div>
+                                                <div>
+                                                    {
+                                                        notebook[0].categories.map((element, index) => {
+                                                            return (
+                                                                <>
+                                                                    {
+                                                                        (changeCategoryArr.indexOf(element) < 0) ?
+                                                                            <>
+                                                                                <button
+                                                                                    onClick={() => { toggleCategory(element) }}
+                                                                                    className={`category-layout-button category-layout-button-active`}>
+                                                                                    {element.charAt(0).toUpperCase() + element.slice(1)}
+                                                                                </button>
+                                                                            </>
+                                                                            :
+                                                                            <>
+                                                                                <button
+                                                                                    onClick={() => { toggleCategory(element) }}
+                                                                                    className={`category-layout-button`}>
+                                                                                    {element.charAt(0).toUpperCase() + element.slice(1)}
+                                                                                </button>
+                                                                            </>
+                                                                    }
+                                                                </>
+                                                            )
+                                                        })
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div>
 
-                                        {
-                                            transaction.map((element, index) => {
-                                                return (
-                                                    <>
-                                                        {(!(index !== 0 && ((transaction[index].date === transaction[index - 1].date) && (transaction[index].month === transaction[index - 1].month) && (transaction[index].year === transaction[index - 1].year))) &&
-                                                            <div className="flexy mt1">
-                                                                {`${element.date}/${element.month + 1}/${element.year}`}
-                                                            </div>
-                                                        )}
+                                                {
+                                                    transaction.map((element, index) => {
+                                                        return (
+                                                            <>
 
-                                                        <div className="flexy">
-                                                            <Flipcards element={element} index={index} deleteTransaction={deleteTransaction} />
 
-                                                        </div>
-                                                    </>
-                                                )
-                                            })
-                                        }
+                                                                {(!(index !== 0 && ((transaction[index].date === transaction[index - 1].date) && (transaction[index].month === transaction[index - 1].month) && (transaction[index].year === transaction[index - 1].year))) &&
+                                                                    <div className="flexy mt1">
+                                                                        {`${element.date}/${element.month + 1}/${element.year}`}
+                                                                    </div>
+                                                                )}
+
+                                                                <div className="flexy">
+                                                                    <Flipcards element={element} index={index} deleteTransaction={deleteTransaction} />
+
+                                                                </div>
+                                                            </>
+                                                        )
+                                                    })
+                                                }
+                                            </div>
+                                        </div>
                                     </>
                                 }
                                 {

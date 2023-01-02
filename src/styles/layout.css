@@ -115,3 +115,16 @@
     max-height: 40rem;
     max-width: auto;
 }
+
+.category-layout-button{
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--input-color);
+    color: var(--text-color);
+    margin-top: 0.75rem;
+}
+
+.category-layout-button-active{
+    background-color: var(--first-color);
+    color: white;
+}

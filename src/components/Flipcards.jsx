@@ -17,7 +17,7 @@ const Flipcards = (props) => {
         <>
             <div className="balance__transaction__content poke">
                 <div onClick={handleClick} 
-                className={`transaction__card sp-card ${spin ? "voltorb" : ""}`}>
+                className={`transaction__card flexy sp-card ${spin ? "voltorb" : ""}`}>
                     <div className="main__card front">
                         <div className='transaction__ transaction__top'>
                             <i className="uil uil-trash-alt delete__button"></i>

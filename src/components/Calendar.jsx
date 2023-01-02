@@ -29,6 +29,7 @@ const Calendar = (props) => {
         else{
             props.setDate(new Date(yi,mi,di,23,59,59,999));
         }
+        console.log(new Date(yi,mi,di,0,0,0,0))
         props.setChoosen(true);
         props.setCalendar(false);
     }

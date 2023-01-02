@@ -29,8 +29,8 @@
 }
 
 .transaction__card {
-    width: 23rem;
-    max-width: 90vw;
+    width: 100%;
+    /* max-width: 100%; */
     height: 6rem;
     /* margin-bottom: 2rem; */
     /* background-color: var(--container-color); */
@@ -46,7 +46,8 @@
 }
 
 .balance__transaction__content {
-    max-width: 90vw;
+    max-width: 100%;
+    width: 100%;
 }
 
 .card {
@@ -79,8 +80,8 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
     height: 5rem;
     border-radius: 0.3rem;
-    width: 23rem;
-    max-width: 90vw;
+    width: 100%;
+    /* max-width: 100%; */
     padding: 0.5rem 1rem;
     background-color: var(--container-color);
 }
@@ -94,10 +95,11 @@
     position: absolute;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
     transform: rotateY(180deg);
-    min-height: 5rem;
+    height: 5rem;
+    overflow-y: scroll;
     padding: 0.5rem 1rem;
-    width: 23rem;
-    max-width: 90vw;
+    width: 100%;
+    /* max-width: 100%; */
     border-radius: 0.3rem;
     background-color: var(--container-color);
 }
