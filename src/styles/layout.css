@@ -122,6 +122,7 @@
     background-color: var(--input-color);
     color: var(--text-color);
     margin-top: 0.75rem;
+    cursor: pointer;
 }
 
 .category-layout-button-active{
