@@ -93,24 +93,19 @@ const NewBalance = () => {
         if (notebook.length > 0) {
             setTransaction(
                 notebook[0].transactions.filter((pay, index) => {
-                    return ((new Date(pay.fulldate.seconds * 1000)) >= startDate && (new Date(pay.fulldate.seconds * 1000)) <= endDate)
+                    return ((!changeCategoryArr.includes(pay.category)) && ((new Date(pay.fulldate.seconds * 1000)) >= startDate && (new Date(pay.fulldate.seconds * 1000)) <= endDate))
                 })
             )
 
             const arr = new Array(1).fill(0);
             notebook[0].transactions.forEach((pay) => {
-                if (((new Date(pay.fulldate.seconds * 1000)) >= startDate && (new Date(pay.fulldate.seconds * 1000)) <= endDate)) {
+                if ((!changeCategoryArr.includes(pay.category)) && ((new Date(pay.fulldate.seconds * 1000)) >= startDate && (new Date(pay.fulldate.seconds * 1000)) <= endDate)) {
                     arr[0] += parseInt(pay.amount);
                 }
             })
             setTotal(arr[0])
         }
     }, [startDate, endDate])
-
-    // const spinner = (index) => {
-    //     document.querySelectorAll(".sp-card")[index].classList.toggle("voltorb");
-    // };
-
 
     const toggleArr = (arr, category) => {
         var idx = arr.indexOf(category);
@@ -124,25 +119,25 @@ const NewBalance = () => {
     }
 
     const toggleCategory = (category) => {
-        console.log(category)
         const arr = changeCategoryArr;
-        console.log(arr)
         const ansArr = toggleArr(arr, category);
         setChangeCategoryArr(ansArr)
         setTransaction(
             notebook[0].transactions.filter((pay, index) => {
-                return (!ansArr.includes(pay.category))
+                return ((!ansArr.includes(pay.category)) && ((new Date(pay.fulldate.seconds * 1000)) >= startDate && (new Date(pay.fulldate.seconds * 1000)) <= endDate))
             })
         )
-        console.log('notebook[0].categories', notebook[0].categories)
+        const totalArr = new Array(1).fill(0);
+            notebook[0].transactions.forEach((pay) => {
+                if ((!ansArr.includes(pay.category)) && ((new Date(pay.fulldate.seconds * 1000)) >= startDate && (new Date(pay.fulldate.seconds * 1000)) <= endDate)) {
+                    totalArr[0] += parseInt(pay.amount);
+                }
+            })
+            setTotal(totalArr[0])
     }
 
 
     const deleteTransaction = (index) => {
-        // document.querySelectorAll('.sp-card')[index]?.forEach((element, i) => {
-        //     element.classList.remove("voltorb")
-        // })
-
         let setup = notebook[0];
         let arr = notebook[0].transactions;
         arr.splice(index, 1);

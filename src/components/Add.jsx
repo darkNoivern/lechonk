@@ -137,10 +137,10 @@ const Add = (props) => {
                                 </i>
                             </div>
 
-                            <ul
-                                class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                {
-                                    show && (notebook !== undefined ?
+                                {/* {
+                                    show &&  */}
+                            <ul className={`dropdown-menu ${!show ? 'hide-menu' : ''} rounded`} aria-labelledby="dropdownMenuButton1">{
+                                    (notebook !== undefined ?
                                         notebook.categories.map((individualCategory, index) => {
                                             return (
                                                 <li className="dropdown-item category_options" onClick={() => { setCategory(individualCategory); setShow(false); }}>{individualCategory.charAt(0).toUpperCase() + individualCategory.slice(1)}</li>
@@ -149,8 +149,9 @@ const Add = (props) => {
                                         :
                                         <></>
                                     )
-                                }
+                            }
                             </ul>
+                                {/* } */}
                         </div>
                         <div class="services__form-content mb1_5">
                             <label for="" className="services__label">Amount</label>

@@ -35,16 +35,30 @@
  justify-content: space-between;
 }
 
+.hide-menu{
+    visibility: hidden;
+    display: none;
+    transition: 0.5s;
+}
+
 .dropdown-menu{
-    padding-top: 1rem;
+    transition: 0.5s;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: var(--container-color);
 }
 
 .category_options{
-    padding: 0.25rem 1rem;
+    padding: 0.5rem 1rem;
     cursor: pointer;
+    border-radius: 0.75rem;
+    margin-bottom: 0.5rem;
     background-color: var(--container-color);
 }
 
 .category_options:hover{
     box-shadow: 0 5px 15px rgb(0 0 0 / 10%);
+    background-color: var(--first-color);
+    color: white;
 }
