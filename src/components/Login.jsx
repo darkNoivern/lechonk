@@ -19,73 +19,31 @@ const Login = () => {
     const [email2, setEmail2] = useState("");
     const [password2, setPassword2] = useState("");
 
-    const [illegalUsername, setIllegalUsername] = useState(false);
-    const [usernamePresent, setUsernamePresent] = useState(false);
-    const [emailPresent, setEmailPresent] = useState(false);
     const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const [userlist, setUserlist] = useState([]);
 
     const navigate = useNavigate();
 
-    function isAlphanumeric(str) {
-        return /^[a-zA-Z0-9]+$/i.test(str)
-    }
-
-    const usersCollectionRef = collection(db, "users");
-    useEffect(() => {
-        onSnapshot(usersCollectionRef, (snapshot) => {
-
-            const result = snapshot.docs.map((doc) => {
-                return {
-                    id: doc.id,
-                    ...doc.data()
-                };
-            })
-            setUserlist(result);
-            // console.log(result)
-        });
-    }, []);
-
     const signup = (event) => {
 
         event.preventDefault();
 
-        if (!isAlphanumeric(username)) {
-            setIllegalUsername(true);
-            return;
-        }
-        
-        const checkUsernamePresent = userlist.find((individual) => {
-            return (individual.displayName === username);
-        })
-        if (checkUsernamePresent !== undefined) {  //  USERNAME FOUND
-            setUsernamePresent(true);
-            return;
-        }
-
-        const checkEmailPresent = userlist.find((individual) => {
-            return (individual.email === email);
-        })
-        if (checkEmailPresent !== undefined) {  //  USERNAME FOUND
-            setEmailPresent(true);
-            return;
-        }
-
-
-        createUserWithEmailAndPassword(auth, email, password)
+        createUserWithEmailAndPassword(auth, email.trim(), password.trim())
             .then((result) => {
                 // Signed in 
                 const user = result.user;
-                updateProfile(result.user, {
-                    displayName: username,
-                });
+                // updateProfile(result.user, {
+                //     displayName: username,
+                // });
 
                 setDoc(doc(db, "users", result.user.uid), {
                     uid: result.user.uid,
-                    displayName: username,
                     email,
                     notebooks: [],
+                    bills: [],
+                    cards: [],
                 });
 
                 navigate("/");
@@ -93,9 +51,9 @@ const Login = () => {
             })
             .catch((error) => {
                 setError(true);
-                setUsername("");
                 setPassword("");
                 setEmail("");
+                setErrorMessage(error.message);
                 return;
                 const errorCode = error.code;
                 const errorMessage = error.message;
@@ -117,6 +75,7 @@ const Login = () => {
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
+                setErrorMessage(error.message)
                 setError(true);
                 setEmail2("");
                 setPassword2("");
@@ -129,74 +88,19 @@ const Login = () => {
             <section className="section login__page flexy">
 
                 {
-                    illegalUsername &&
-                    <div className="services__modal">
-                        <div className="services__modal-content login__error__modal-content">
-                            <h4 className="services__modal-title">Lechonk <br /> Guidelines</h4>
-                            <i
-                                onClick={() => {
-                                    setIllegalUsername(false);
-                                    setUsername("");
-                                }}
-                                className="uil uil-times services__modal-close">
-                            </i>
-                            <div>
-                                Username should only contain a-z, A-Z, 0-9 and no spaces.
-                            </div>
-                        </div>
-                    </div>
-                }
-
-                {
-                    usernamePresent &&
-                    <div className="services__modal">
-                        <div className="services__modal-content login__error__modal-content">
-                            <h4 className="services__modal-title">Lechonk <br /> Guidelines</h4>
-                            <i
-                                onClick={() => {
-                                    setUsernamePresent(false);
-                                    setUsername("");
-                                }}
-                                className="uil uil-times services__modal-close">
-                            </i>
-                            <div>
-                                This username is already taken, choose a different one please 🥺.
-                            </div>
-                        </div>
-                    </div>
-                }
-                {
-                    emailPresent &&
-                    <div className="services__modal">
-                        <div className="services__modal-content login__error__modal-content">
-                            <h4 className="services__modal-title">Lechonk <br /> Guidelines</h4>
-                            <i
-                                onClick={() => {
-                                    setEmailPresent(false);
-                                    setEmail("");
-                                }}
-                                className="uil uil-times services__modal-close">
-                            </i>
-                            <div>
-                                This email is already in use, choose a different one please 🥺.
-                            </div>
-                        </div>
-                    </div>
-                }
-
-                {
                     error &&
                     <div className="services__modal">
-                        <div className="services__modal-content login__error__modal-content">
+                        <div className="services__modal-content danger__modal login__error__modal-content">
                             <h4 className="services__modal-title">Lechonk <br /> Guidelines</h4>
                             <i
                                 onClick={() => {
                                     setError(false);
                                 }}
-                                className="uil uil-times services__modal-close">
+                                className="uil uil-times services__modal-close danger__close">
                             </i>
-                            <div>
-                                Some error has occured, please retry.
+                            <div className='error__message-login'>
+                            {errorMessage}
+                                {/* Some error has occured, please retry. */}
                             </div>
                         </div>
                     </div>
@@ -208,7 +112,6 @@ const Login = () => {
                         onClick={() => {
                             setEmail("");
                             setEmail2("");
-                            setUsername("");
                             setPassword("");
                             setPassword2("");
                         }}
@@ -219,12 +122,12 @@ const Login = () => {
 
                             className='services__form'>
                             <label className='login__label' htmlFor="chk" aria-hidden="true">Sign Up</label>
-                            <div className="flexy">
+                            {/* <div className="flexy">
                                 <input
                                     value={username}
                                     onChange={(event) => { setUsername(event.target.value); }}
                                     className='login__input' type="text" name="txt" placeholder='username' required="" />
-                            </div>
+                            </div> */}
                             <div className="flexy">
                                 <input
                                     value={email}

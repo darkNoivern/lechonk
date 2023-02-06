@@ -4,6 +4,7 @@ import { NavLink, Link } from 'react-router-dom'
 import lechonk from '../img/915.png'
 import { auth } from '../firebase.config'
 import { signOut } from "firebase/auth";
+import '../styles/navbar.css'
 
 const Navbar = () => {
     

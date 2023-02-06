@@ -103,3 +103,16 @@
 #chk:checked~.signup .login__label {
     transform: scale(0.6);
 }
+
+.danger__modal{
+    background-color: #dc3545;
+}
+
+.danger__close{
+    color: white;
+}
+
+.error__message-login{
+    /* color: #212529; */
+    color: black;
+}

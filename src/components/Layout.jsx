@@ -32,7 +32,7 @@ const NewBalance = () => {
 
     //  params
     const parameter = useParams();
-    const username = parameter.username;
+    const userid = parameter.userid;
     const notebookName = parameter.notebook;
 
     //  passing props
@@ -78,12 +78,27 @@ const NewBalance = () => {
 
             setNotebook(result)
             if (result.length > 0) {
-                setTransaction(result[0].transactions)
+                // setTransaction(result[0].transactions)
+                // const arr = new Array(1).fill(0);
+                // result[0].transactions.forEach((pay) => {
+                //     arr[0] += parseInt(pay.amount);
+                // })
+                // setTotal(arr[0])
+
+                setTransaction(
+                    result[0].transactions.filter((pay, index) => {
+                        return ((!changeCategoryArr.includes(pay.category)) && ((new Date(pay.fulldate.seconds * 1000)) >= startDate && (new Date(pay.fulldate.seconds * 1000)) <= endDate))
+                    })
+                )
+    
                 const arr = new Array(1).fill(0);
                 result[0].transactions.forEach((pay) => {
-                    arr[0] += parseInt(pay.amount);
+                    if ((!changeCategoryArr.includes(pay.category)) && ((new Date(pay.fulldate.seconds * 1000)) >= startDate && (new Date(pay.fulldate.seconds * 1000)) <= endDate)) {
+                        arr[0] += parseInt(pay.amount);
+                    }
                 })
                 setTotal(arr[0])
+
             }
         });
 
@@ -138,9 +153,11 @@ const NewBalance = () => {
 
 
     const deleteTransaction = (index) => {
+
+        let delIndex = notebook[0].transactions.indexOf(transaction[index]);
         let setup = notebook[0];
         let arr = notebook[0].transactions;
-        arr.splice(index, 1);
+        arr.splice(delIndex, 1);
         setup.transactions = arr;
         setDoc(doc(db, `users/${currentUser.uid}/notebooks`, `${notebook[0].name}`), setup)
     }
@@ -148,7 +165,7 @@ const NewBalance = () => {
     return (
         <>
             {
-                (username !== currentUser.displayName) ?
+                (userid !== currentUser.uid) ?
                     <Notyou />
                     :
 
@@ -322,10 +339,17 @@ const NewBalance = () => {
                                                         return (
                                                             <>
 
-
-                                                                {(!(index !== 0 && ((transaction[index].date === transaction[index - 1].date) && (transaction[index].month === transaction[index - 1].month) && (transaction[index].year === transaction[index - 1].year))) &&
+                                                                {((
+                                                                    (index === 0) ||
+                                                                    (index !== 0 && (
+                                                                    ( new Date(transaction[index].fulldate.seconds*1000).getDate() !== new Date(transaction[index-1].fulldate.seconds*1000).getDate()) ||
+                                                                    ( new Date(transaction[index].fulldate.seconds*1000).getMonth() !== new Date(transaction[index-1].fulldate.seconds*1000).getMonth()) || 
+                                                                    ( new Date(transaction[index].fulldate.seconds*1000).getFullYear() !== new Date(transaction[index-1].fulldate.seconds*1000).getFullYear())
+                                                                    ))
+                                                                    ) 
+                                                                    &&
                                                                     <div className="flexy mt1">
-                                                                        {`${element.date}/${element.month + 1}/${element.year}`}
+                                                                        {`${new Date(element.fulldate.seconds*1000).getDate()}/${new Date(element.fulldate.seconds*1000).getMonth() + 1}/${new Date(element.fulldate.seconds*1000).getFullYear()}`}
                                                                     </div>
                                                                 )}
 

@@ -29,11 +29,11 @@ const Add = (props) => {
     const [description, setDescription] = useState("");
     const [show, setShow] = useState(false);
     const [error, setError] = useState(false);
+    const [reasonError, setReasonError] = useState(false);
     const [amountError, setAmountError] = useState(false);
 
     function isNumeric(str) {
-        // console.log(str)
-        return /^[0-9]+$/.test(str);
+        return /^\d+(\.\d{1,2})?$/.test(str);
     }
 
     const addTransaction = (event) => {
@@ -45,9 +45,14 @@ const Add = (props) => {
             return ;
         }
 
-        if (!isNumeric(amount)) {
+        if (!isNumeric(amount.trim())) {
             setAmountError(true);
-            return;
+            return ;
+        }
+
+        if(reason.trim() === ""){
+            setReasonError(true);
+            return ;
         }
 
         let setup = notebook;
@@ -56,14 +61,14 @@ const Add = (props) => {
         const date = new Date();
         const form = {
             category: category,
-            reason: reason,
-            amount: amount,
-            description: description,
+            reason: reason.trim(),
+            amount: amount.trim(),
+            description: description.trim(),
             fulldate: date,
-            day: date.getDay(),
-            date: date.getDate(),
-            month: date.getMonth(),
-            year: date.getFullYear()
+            // day: date.getDay(),
+            // date: date.getDate(),
+            // month: date.getMonth(),
+            // year: date.getFullYear()
         }
         arr.unshift(form);
         setup.transactions = arr;
@@ -91,6 +96,24 @@ const Add = (props) => {
                             </i>
                             <div>
                                 Please select a realtive category according to the transaction.
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                {
+                    reasonError &&
+                    <div className="services__modal">
+                        <div className="services__modal-content login__error__modal-content">
+                            <h4 className="services__modal-title">Lechonk <br /> Guidelines</h4>
+                            <i
+                                onClick={() => {
+                                    setReasonError(false);
+                                }}
+                                className="uil uil-times services__modal-close">
+                            </i>
+                            <div>
+                                Please type the reason properly
                             </div>
                         </div>
                     </div>
@@ -173,7 +196,6 @@ const Add = (props) => {
                         <div className='services__form-content mb1_5'>
                             <label for="" className="services__label">Description</label>
                             <input
-                            required
                                 value={description}
                                 onChange={((event) => { setDescription(event.target.value) })}
                                 className='services__input' type="text" />

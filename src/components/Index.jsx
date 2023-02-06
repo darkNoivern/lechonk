@@ -23,7 +23,7 @@ const Index = () => {
                     <Route exact path="/notebooks" element={currentUser ? <Notebook /> : <Login />} />
                     <Route exact path="/login" element={<Login />} />
                     {/* <Route exact path="/layout" element={<Layout />} /> */}
-                    <Route exact path={`/notebook/:username/:notebook`} element={currentUser ? <Layout /> : <Login />} />
+                    <Route exact path={`/notebook/:userid/:notebook`} element={currentUser ? <Layout /> : <Login />} />
                     <Route path= '*' element={<Error />} />
                 </Routes>
             </Router>

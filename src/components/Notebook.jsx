@@ -24,14 +24,39 @@ const Notebook = () => {
     const [current, setCurrent] = useState("");
     const [notebookName, setNotebookName] = useState("");
     const [notebookDescription, setNotebookDescription] = useState("");
+
+    const [user, setUser] = useState([]);
     const [notebooks, setNotebooks] = useState([]);
 
     const [error, setError] = useState(false);
     const [lengthError, setLengthError] = useState(false);
     const [notebookError, setNotebookError] = useState(false);
+    const [notebookPresent, setNotebookPresent] = useState(false);
 
     const blogsCollectionRef = collection(db, `users/${currentUser.uid}/notebooks`);
     const sortRef = query(blogsCollectionRef, orderBy('createdAt', 'desc'));
+
+
+    const usersCollectionRef = collection(db, `users`);
+
+    useEffect(() => {
+
+        onSnapshot(usersCollectionRef, (snapshot) => {
+            const users = snapshot.docs.map((doc) => {
+                return {
+                    id: doc.id,
+                    ...doc.data()
+                };
+            })
+
+            const result = users.filter((element, index) => {
+                return (element.uid === currentUser.uid);
+            })
+
+            setUser(result);
+        });
+
+    }, [currentUser]);
 
     useEffect(() => {
         onSnapshot(sortRef, (snapshot) => {
@@ -46,12 +71,8 @@ const Notebook = () => {
         });
     }, [currentUser]);
 
-    function isCategory(str) {
-        return /^[a-z ]+$/i.test(str)
-    }
-
-    function isAlpha(str) {
-        return /^[a-z]+$/i.test(str)
+    function isAlphanumericAndSpace(str) {
+        return /^[a-zA-Z0-9 ]+$/i.test(str)
     }
 
     //  add 
@@ -59,17 +80,23 @@ const Notebook = () => {
 
         event.preventDefault();
 
-        if (!isAlpha(notebookName)) {
+        if (!isAlphanumericAndSpace(notebookName.trim())) {
             setNotebookError(true);
             return;
         }
+
+        if (user.length>0 && (user[0].notebooks.indexOf(notebookName.trim())>(-1))) {
+            setNotebookPresent(true);
+            return;
+        }
+
         const submitCategoryArray = categories;
         submitCategoryArray.push("others")
         setCategories(categories => [...categories, "others"])
         const docRef = doc(db, `users/${currentUser.uid}/notebooks/${notebookName}`);
         setDoc(docRef, {
-            name: notebookName,
-            description: notebookDescription,
+            name: notebookName.trim(),
+            description: notebookDescription.trim(),
             categories: submitCategoryArray,
             transactions: [],
             createdAt: serverTimestamp(),
@@ -89,10 +116,10 @@ const Notebook = () => {
     }
 
     const submitCategory = () => {
-        if (!categories.includes(current)) {
-            if (isCategory(current)) {
-                if (categories.length < 7) {
-                    setCategories(categories => [...categories, current])
+        if (!categories.includes(current.trim())) {
+            if (isAlphanumericAndSpace(current.trim())) {
+                if (categories.length < 100) {
+                    setCategories(categories => [...categories, current.trim()])
                 }
                 else {
                     setLengthError(true);
@@ -129,7 +156,7 @@ const Notebook = () => {
                                             <h3 className="services__title">{notebooki.name.charAt(0).toUpperCase() + notebooki.name.slice(1)}<br /> Expenses</h3>
                                         </div>
                                         <Link
-                                            to={`/notebook/${currentUser.displayName}/${notebooki.name}`}
+                                            to={`/notebook/${currentUser.uid}/${notebooki.name}`}
                                             className="button button--flex button--small button--link services__button">
                                             View More
                                             <i className="uil uil-arrow-right button__icon"></i>
@@ -182,7 +209,7 @@ const Notebook = () => {
                                                 notebookError &&
                                                 <div className="info flex_space_between">
                                                     <div>
-                                                        <i class="uil uil-user-exclamation info__icon"></i> Only alphabetic letters allowed
+                                                        <i class="uil uil-user-exclamation info__icon"></i> Only a-z, A-Z, 0-9 and spaces allowed
                                                     </div>
                                                     <div className='flexy'>
                                                         <i
@@ -205,24 +232,45 @@ const Notebook = () => {
                                                     onChange={(event) => { setNotebookName(event.target.value).toLowerCase() }}
                                                     type="text" className="services__input" />
                                             </div>
+
+
+                                            {
+                                                notebookPresent &&
+                                                <div className="info flex_space_between">
+                                                    <div>
+                                                        <i class="uil uil-user-exclamation info__icon"></i> Already a notebook present
+                                                    </div>
+                                                    <div className='flexy'>
+                                                        <i
+                                                            onClick={() => {
+                                                                setNotebookPresent(false);
+                                                                setCurrent("");
+                                                            }}
+                                                            className="uil uil-times error_close">
+                                                        </i>
+                                                    </div>
+                                                </div>
+
+                                            }
+
                                             <div class="services__form-content">
                                                 <label for="" className="services__label">Notebook Description</label>
                                                 <input
-                                                    required
+                                                    // required
                                                     value={notebookDescription}
                                                     onChange={(event) => { setNotebookDescription(event.target.value) }}
                                                     type="text" className="services__input" />
                                             </div>
 
                                             <div className="info">
-                                                <i class="uil uil-user-exclamation info__icon"></i> You can add max 7 extra categories
+                                                <i class="uil uil-user-exclamation info__icon"></i> You can add max 99 extra categories
                                             </div>
 
                                             {
                                                 error &&
                                                 <div className="info flex_space_between">
                                                     <div>
-                                                        <i class="uil uil-user-exclamation info__icon"></i> Only alphabetic letters and spaces allowed
+                                                        <i class="uil uil-user-exclamation info__icon"></i> Only a-z, A-Z, 0-9 and spaces allowed
                                                     </div>
                                                     <div className='flexy'>
                                                         <i
@@ -242,7 +290,7 @@ const Notebook = () => {
                                                 lengthError &&
                                                 <div className="info flex_space_between">
                                                     <div>
-                                                        <i class="uil uil-user-exclamation info__icon"></i> Only 7 extra categories allowed 😅
+                                                        <i class="uil uil-user-exclamation info__icon"></i> Only 99 extra categories allowed 😅
                                                     </div>
                                                     <div className='flexy'>
                                                         <i
@@ -263,10 +311,10 @@ const Notebook = () => {
                                                         return (
                                                             <>
                                                                 <span className='category__span' key={index}>
-                                                                    {category.charAt(0).toUpperCase() + category.slice(1)}
+                                                                    {category}
                                                                     <i
                                                                         onClick={() => { delCategory(index) }}
-                                                                        class="uil uil-times firstColor"></i></span>
+                                                                        class="uil uil-fire firstColor delete__category"></i></span>
                                                             </>
                                                         )
                                                     })
@@ -281,7 +329,7 @@ const Notebook = () => {
                                                     <label for="" className="services__label">Add Categories</label>
                                                     <input
                                                         value={current}
-                                                        onChange={(event) => { setCurrent(event.target.value).toLowerCase() }}
+                                                        onChange={(event) => { setCurrent(event.target.value) }}
                                                         className='services__input' type="text" />
                                                 </div>
                                                 <span
