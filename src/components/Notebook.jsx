@@ -85,13 +85,19 @@ const Notebook = () => {
             return;
         }
 
+        
+        if (!isAlphanumericAndSpace(notebookDescription.trim())) {
+            setNotebookError(true);
+            return;
+        }
+
         if (user.length>0 && (user[0].notebooks.indexOf(notebookName.trim())>(-1))) {
             setNotebookPresent(true);
             return;
         }
 
         const submitCategoryArray = categories;
-        submitCategoryArray.push("others")
+        submitCategoryArray.push("Others")
         setCategories(categories => [...categories, "others"])
         const docRef = doc(db, `users/${currentUser.uid}/notebooks/${notebookName}`);
         setDoc(docRef, {
@@ -153,7 +159,7 @@ const Notebook = () => {
                                     <div className="services__content">
                                         <div>
                                             <i className="uil uil-notes services__icon"></i>
-                                            <h3 className="services__title">{notebooki.name.charAt(0).toUpperCase() + notebooki.name.slice(1)}<br /> Expenses</h3>
+                                            <h3 className="services__title">{notebooki.name}<br /> Expenses</h3>
                                         </div>
                                         <Link
                                             to={`/notebook/${currentUser.uid}/${notebooki.name}`}
@@ -256,7 +262,7 @@ const Notebook = () => {
                                             <div class="services__form-content">
                                                 <label for="" className="services__label">Notebook Description</label>
                                                 <input
-                                                    // required
+                                                    required
                                                     value={notebookDescription}
                                                     onChange={(event) => { setNotebookDescription(event.target.value) }}
                                                     type="text" className="services__input" />

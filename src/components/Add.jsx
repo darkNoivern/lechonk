@@ -40,19 +40,19 @@ const Add = (props) => {
 
         event.preventDefault();
 
-        if(category===""){
+        if (category === "") {
             setError(true);
-            return ;
+            return;
         }
 
         if (!isNumeric(amount.trim())) {
             setAmountError(true);
-            return ;
+            return;
         }
 
-        if(reason.trim() === ""){
+        if (reason.trim() === "") {
             setReasonError(true);
-            return ;
+            return;
         }
 
         let setup = notebook;
@@ -82,61 +82,60 @@ const Add = (props) => {
 
     return (
         <>
-        
-        {
-                    error &&
-                    <div className="services__modal">
-                        <div className="services__modal-content login__error__modal-content">
-                            <h4 className="services__modal-title">Lechonk <br /> Guidelines</h4>
-                            <i
-                                onClick={() => {
-                                    setError(false);
-                                }}
-                                className="uil uil-times services__modal-close">
-                            </i>
-                            <div>
-                                Please select a realtive category according to the transaction.
-                            </div>
+            {
+                error &&
+                <div className="services__modal">
+                    <div className="services__modal-content login__error__modal-content">
+                        <h4 className="services__modal-title">Lechonk <br /> Guidelines</h4>
+                        <i
+                            onClick={() => {
+                                setError(false);
+                            }}
+                            className="uil uil-times services__modal-close">
+                        </i>
+                        <div>
+                            Please select a realtive category according to the transaction.
                         </div>
                     </div>
-                }
+                </div>
+            }
 
-                {
-                    reasonError &&
-                    <div className="services__modal">
-                        <div className="services__modal-content login__error__modal-content">
-                            <h4 className="services__modal-title">Lechonk <br /> Guidelines</h4>
-                            <i
-                                onClick={() => {
-                                    setReasonError(false);
-                                }}
-                                className="uil uil-times services__modal-close">
-                            </i>
-                            <div>
-                                Please type the reason properly
-                            </div>
+            {
+                reasonError &&
+                <div className="services__modal">
+                    <div className="services__modal-content login__error__modal-content">
+                        <h4 className="services__modal-title">Lechonk <br /> Guidelines</h4>
+                        <i
+                            onClick={() => {
+                                setReasonError(false);
+                            }}
+                            className="uil uil-times services__modal-close">
+                        </i>
+                        <div>
+                            Please type the reason properly
                         </div>
                     </div>
-                }
+                </div>
+            }
 
-                {
-                    amountError &&
-                    <div className="services__modal">
-                        <div className="services__modal-content login__error__modal-content">
-                            <h4 className="services__modal-title">Lechonk <br /> Guidelines</h4>
-                            <i
-                                onClick={() => {
-                                    setAmountError(false);
-                                    setAmount("");
-                                }}
-                                className="uil uil-times services__modal-close">
-                            </i>
-                            <div>
+            {
+                amountError &&
+                <div className="services__modal">
+                    <div className="services__modal-content login__error__modal-content">
+                        <h4 className="services__modal-title">Lechonk <br /> Guidelines</h4>
+                        <i
+                            onClick={() => {
+                                setAmountError(false);
+                                setAmount("");
+                            }}
+                            className="uil uil-times services__modal-close">
+                        </i>
+                        <div>
                             Please enter only numbers in the amount field.
-                            </div>
                         </div>
                     </div>
-                }
+                </div>
+            }
 
 
 
@@ -153,33 +152,33 @@ const Add = (props) => {
                                 onClick={() => { setShow(!show); }}
                                 class={`dropdown-toggle ${show ? "dropdown-open" : "dropdown-close"} flex_space_between`} type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                 <span className='flexy'>
-                                    {category === "" ? "Dropdown Button" : `${category.charAt(0).toUpperCase() + category.slice(1)}`}
+                                    {category === "" ? "Dropdown Button" : `${category}`}
                                 </span>
 
                                 <i className={`uil uil-angle-down dropdown__arrow`}>
                                 </i>
                             </div>
 
-                                {/* {
+                            {/* {
                                     show &&  */}
                             <ul className={`dropdown-menu ${!show ? 'hide-menu' : ''} rounded`} aria-labelledby="dropdownMenuButton1">{
-                                    (notebook !== undefined ?
-                                        notebook.categories.map((individualCategory, index) => {
-                                            return (
-                                                <li className="dropdown-item category_options" onClick={() => { setCategory(individualCategory); setShow(false); }}>{individualCategory.charAt(0).toUpperCase() + individualCategory.slice(1)}</li>
-                                            )
-                                        })
-                                        :
-                                        <></>
-                                    )
+                                (notebook !== undefined ?
+                                    notebook.categories.map((individualCategory, index) => {
+                                        return (
+                                            <li className="dropdown-item category_options" onClick={() => { setCategory(individualCategory); setShow(false); }}>{individualCategory}</li>
+                                        )
+                                    })
+                                    :
+                                    <></>
+                                )
                             }
                             </ul>
-                                {/* } */}
+                            {/* } */}
                         </div>
                         <div class="services__form-content mb1_5">
                             <label for="" className="services__label">Amount</label>
                             <input
-                            required
+                                required
                                 value={amount}
                                 onChange={(event) => { setAmount(event.target.value) }}
                                 type="text" className="services__input" />
@@ -188,7 +187,7 @@ const Add = (props) => {
                         <div className='services__form-content mb1_5'>
                             <label for="" className="services__label">Crisp Reason</label>
                             <input
-                            required
+                                required
                                 value={reason}
                                 onChange={((event) => { setReason(event.target.value) })}
                                 className='services__input' type="text" />

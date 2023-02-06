@@ -178,14 +178,13 @@ const NewBalance = () => {
 
                                 <div className="flexy second__color p2">
                                     <div>
-                                        <h2 className="section__title bigger__text">{notebookName.charAt(0).toUpperCase() + notebookName.slice(1)}</h2>
+                                        <h2 className="section__title bigger__text">{notebookName}</h2>
                                         <span className="section__subtitle less__margin__subtitle">{notebook[0].description.charAt(0).toUpperCase() + notebook[0].description.slice(1)}</span>
                                     </div>
                                 </div>
 
                                 <div className='flexy second__color p2'>
                                     <div>
-
                                         <h2 className="section__title fontWeightNormal">Timeline</h2>
                                         <span className="section__subtitle less__margin__subtitle">Get details of current balance here</span>
                                         <div className="services__container container grid">
@@ -314,7 +313,7 @@ const NewBalance = () => {
                                                                                 <button
                                                                                     onClick={() => { toggleCategory(element) }}
                                                                                     className={`category-layout-button category-layout-button-active`}>
-                                                                                    {element.charAt(0).toUpperCase() + element.slice(1)}
+                                                                                    {element}
                                                                                 </button>
                                                                             </>
                                                                             :
@@ -322,7 +321,7 @@ const NewBalance = () => {
                                                                                 <button
                                                                                     onClick={() => { toggleCategory(element) }}
                                                                                     className={`category-layout-button`}>
-                                                                                    {element.charAt(0).toUpperCase() + element.slice(1)}
+                                                                                    {element}
                                                                                 </button>
                                                                             </>
                                                                     }
