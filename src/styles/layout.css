@@ -97,6 +97,7 @@
 .layout__cards__container{
     justify-content: center;
 }
+
 @media screen and (max-width: 567px) {
     .layout__cards__container{
         gap: 0.5rem;
@@ -132,4 +133,24 @@
 
 .delete__button{
     cursor: pointer;
+}
+
+.income-button{
+    padding: 0.5rem 1rem;
+}
+
+.uil-link-add{
+    padding-right: 0.75rem;
+}
+
+.balance-title{
+    font-size: 1.15rem;
+}
+
+.balance__content{
+    height: 10rem;
+}
+
+.income__submit{
+    width: 100%;
 }

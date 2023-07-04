@@ -85,13 +85,13 @@ const Notebook = () => {
             return;
         }
 
-        
+
         if (!isAlphanumericAndSpace(notebookDescription.trim())) {
             setNotebookError(true);
             return;
         }
 
-        if (user.length>0 && (user[0].notebooks.indexOf(notebookName.trim())>(-1))) {
+        if (user.length > 0 && (user[0].notebooks.indexOf(notebookName.trim()) > (-1))) {
             setNotebookPresent(true);
             return;
         }
@@ -105,6 +105,7 @@ const Notebook = () => {
             description: notebookDescription.trim(),
             categories: submitCategoryArray,
             transactions: [],
+            income: [],
             createdAt: serverTimestamp(),
         })
 
@@ -119,6 +120,18 @@ const Notebook = () => {
         setCurrent("");
         setOpenModal(false);
 
+    }
+
+    const deleteNotebook = (index, name) => {
+        console.log(index, name);
+        deleteDoc(doc(db, `users/${currentUser.uid}/notebooks/${name}`));
+        const arr = notebooks.filter((element, i) => {
+            return (i !== index);
+        });
+
+        updateDoc(doc(db, `users/${currentUser.uid}`), {
+            notebooks: arr,    
+        });
     }
 
     const submitCategory = () => {
@@ -161,12 +174,15 @@ const Notebook = () => {
                                             <i className="uil uil-notes services__icon"></i>
                                             <h3 className="services__title">{notebooki.name}<br /> Expenses</h3>
                                         </div>
-                                        <Link
-                                            to={`/notebook/${currentUser.uid}/${notebooki.name}`}
-                                            className="button button--flex button--small button--link services__button">
-                                            View More
-                                            <i className="uil uil-arrow-right button__icon"></i>
-                                        </Link>
+                                        <div className='flex-space-between'>
+                                            <Link
+                                                to={`/notebook/${currentUser.uid}/${notebooki.name}`}
+                                                className="button custom-height-notebooks button--flex button--small button--link services__button">
+                                                View More
+                                                <i className="uil uil-arrow-right button__icon"></i>
+                                            </Link>
+                                            <i onClick={()=>{deleteNotebook(index, notebooki.name)}} class="uil uil-trash-alt notebook-delete-icon"></i>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -188,7 +204,7 @@ const Notebook = () => {
                                     setNotebookName("");
                                     setNotebookDescription("");
                                 }}
-                                className="button button--flex button--small button--link services__button">
+                                className="button button--flex button--small custom-height-notebooks button--link services__button">
                                 Add
                                 <i className="uil uil-arrow-right button__icon"></i>
                             </span>

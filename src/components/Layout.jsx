@@ -22,6 +22,7 @@ import {
     query,
     serverTimestamp,
     orderBy,
+    FieldValue
 } from "firebase/firestore";
 
 
@@ -48,10 +49,17 @@ const NewBalance = () => {
     const [openStartCalendar, setOpenStartCalendar] = useState(false);
     const [openEndCalendar, setOpenEndCalendar] = useState(false);
 
+    const [user, setUser] = useState([]);
+
     const [balance, setBalance] = useState(true);
     const [transactionTab, setTransactionTab] = useState(false);
     const [manage, setManage] = useState(false);
     const [add, setAdd] = useState(false);
+
+    const [openModal, setOpenModal] = useState(false);
+    const [income, setIncome] = useState(0);
+    const [incomeValueError, setIncomeValueError] = useState(false);
+    const [incomeInput, setIncomeInput] = useState('');
 
     const defaultStart = new Date(1950, 0, 1, 0, 0, 0, 0);
     const defaultEnd = new Date(2050, 11, 31, 23, 59, 59, 999);
@@ -78,19 +86,13 @@ const NewBalance = () => {
 
             setNotebook(result)
             if (result.length > 0) {
-                // setTransaction(result[0].transactions)
-                // const arr = new Array(1).fill(0);
-                // result[0].transactions.forEach((pay) => {
-                //     arr[0] += parseInt(pay.amount);
-                // })
-                // setTotal(arr[0])
 
                 setTransaction(
                     result[0].transactions.filter((pay, index) => {
                         return ((!changeCategoryArr.includes(pay.category)) && ((new Date(pay.fulldate.seconds * 1000)) >= startDate && (new Date(pay.fulldate.seconds * 1000)) <= endDate))
                     })
                 )
-    
+
                 const arr = new Array(1).fill(0);
                 result[0].transactions.forEach((pay) => {
                     if ((!changeCategoryArr.includes(pay.category)) && ((new Date(pay.fulldate.seconds * 1000)) >= startDate && (new Date(pay.fulldate.seconds * 1000)) <= endDate)) {
@@ -98,6 +100,16 @@ const NewBalance = () => {
                     }
                 })
                 setTotal(arr[0])
+
+
+                const incomearr = new Array(1).fill(0);
+                result[0].income.forEach((pay) => {
+                    if (((new Date(pay.fulldate.seconds * 1000)) >= startDate && (new Date(pay.fulldate.seconds * 1000)) <= endDate)) {
+                        incomearr[0] += parseInt(pay.amount);
+                    }
+                })
+                console.log(incomearr[0]);
+                setIncome(incomearr[0])
 
             }
         });
@@ -119,6 +131,15 @@ const NewBalance = () => {
                 }
             })
             setTotal(arr[0])
+
+            const incomearr = new Array(1).fill(0);
+            notebook[0].income.forEach((pay) => {
+                if (((new Date(pay.fulldate.seconds * 1000)) >= startDate && (new Date(pay.fulldate.seconds * 1000)) <= endDate)) {
+                    incomearr[0] += parseInt(pay.amount);
+                }
+            })
+            setIncome(incomearr[0])
+
         }
     }, [startDate, endDate])
 
@@ -143,14 +164,47 @@ const NewBalance = () => {
             })
         )
         const totalArr = new Array(1).fill(0);
-            notebook[0].transactions.forEach((pay) => {
-                if ((!ansArr.includes(pay.category)) && ((new Date(pay.fulldate.seconds * 1000)) >= startDate && (new Date(pay.fulldate.seconds * 1000)) <= endDate)) {
-                    totalArr[0] += parseInt(pay.amount);
-                }
-            })
-            setTotal(totalArr[0])
+        notebook[0].transactions.forEach((pay) => {
+            if ((!ansArr.includes(pay.category)) && ((new Date(pay.fulldate.seconds * 1000)) >= startDate && (new Date(pay.fulldate.seconds * 1000)) <= endDate)) {
+                totalArr[0] += parseInt(pay.amount);
+            }
+        })
+        setTotal(totalArr[0])
     }
 
+    function isNumeric(str) {
+
+        if (typeof(str) == 'number') {
+            str = str.toString();
+        }
+          
+        // Check if input is empty
+        if (str.trim() === '') {
+            return false;
+        }
+
+        return /^\d+(\.\d{1,2})?$/.test(str);
+    }
+
+    const addIncome = () => {
+
+        if(!isNumeric(incomeInput)){
+            setIncomeValueError(true);
+            return ;
+        }
+
+        const date = new Date();
+        // Atomically add a new region to the "regions" array field.
+        updateDoc(doc(db, `users/${currentUser.uid}/notebooks/${notebookName}`), {
+            income: arrayUnion({
+                amount: parseInt(incomeInput),
+                fulldate: date,
+            })
+        });
+        
+        setIncomeInput(0);
+        setOpenModal(false);
+    }
 
     const deleteTransaction = (index) => {
 
@@ -176,14 +230,14 @@ const NewBalance = () => {
 
                             <div className="services__container mb-3 container grid layout__cards__container grid2">
 
-                                <div className="flexy second__color p2">
+                                <div className="flexy second__color p2 section_side_padding">
                                     <div>
-                                        <h2 className="section__title bigger__text">{notebookName}</h2>
-                                        <span className="section__subtitle less__margin__subtitle">{notebook[0].description.charAt(0).toUpperCase() + notebook[0].description.slice(1)}</span>
+                                        <h2 className="section__title bigger__text wordBreak">{notebookName}</h2>
+                                        <span className="section__subtitle less__margin__subtitle wordBreak">{notebook[0].description.charAt(0).toUpperCase() + notebook[0].description.slice(1)}</span>
                                     </div>
                                 </div>
 
-                                <div className='flexy second__color p2'>
+                                <div className='flexy second__color p2 section_side_padding'>
                                     <div>
                                         <h2 className="section__title fontWeightNormal">Timeline</h2>
                                         <span className="section__subtitle less__margin__subtitle">Get details of current balance here</span>
@@ -263,6 +317,58 @@ const NewBalance = () => {
                                     Add
                                 </button>
                             </div>
+
+                            {
+                                openModal &&
+                                <div className="services__modal">
+                                    <div className="services__modal-content notebook__modal-content">
+                                        <h4 className="services__modal-title">
+                                            Add <br /> Income
+                                        </h4>
+                                        <i
+                                            onClick={() => {
+                                                setOpenModal(false);
+                                                setIncomeValueError(false);
+                                            }}
+                                            className="uil uil-times services__modal-close"></i>
+
+                                        <div class="services__form-content mb-3">
+                                            <label for="" className="services__label">Insert Amount</label>
+                                            <input
+                                            onChange={(event)=>{
+                                                setIncomeInput(event.target.value);
+                                                setIncomeValueError(false);
+                                            }}
+                                            type="text" className="services__input" />
+                                        </div>
+
+                                        {
+                                                incomeValueError &&
+                                                <div className="info flex_space_between mb-3">
+                                                    <div>
+                                                        <i class="uil uil-user-exclamation info__icon"></i> Please enter a valid amount !!
+                                                    </div>
+                                                    <div className='flexy'>
+                                                        <i
+                                                            onClick={() => {
+                                                                setIncomeInput('');
+                                                                setIncomeValueError(false);
+                                                            }}
+                                                            className="uil uil-times error_close">
+                                                        </i>
+                                                    </div>
+                                                </div>
+
+                                            }
+
+
+                                        <button 
+                                        onClick={()=>{addIncome();}}
+                                        className="flexy income__submit button">Submit</button>
+                                    </div>
+                                </div>
+                            }
+
                             <div className='border__style'>
                                 {
                                     balance &&
@@ -272,18 +378,23 @@ const NewBalance = () => {
                                         <span className="section__subtitle less__margin__subtitle">Get details of current balance here</span>
                                         <div className="services__container container grid marginBottom3">
                                             <div>
-                                                <div className="balance__content">
+                                                <div onClick={() => { setOpenModal(true); }} className="balance__content">
                                                     <div className='balance__padding'>
-                                                        <h4>Income</h4>
-                                                        <h3 className=" flexy services__title">Rs<br />20000</h3>
+                                                        <h4 className='flexy balance-title'>Total Balance</h4>
+                                                        <div className=" flexy services__title">Rs {`${income}`}</div>
+                                                        <div className='flexy'>
+                                                            <div className="button income-button">
+                                                                <i class="uil uil-link-add"></i>Add Balance
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div>
-                                                <div className="balance__content">
+                                                <div className="balance__content flexy">
                                                     <div className='balance__padding'>
-                                                        <h4>Expense</h4>
-                                                        <h3 className=" flexy services__title">Rs<br />{total}</h3>
+                                                        <h4 className='flexy balance-title mb-3'>Current Balance</h4>
+                                                        <div className=" flexy services__title">Rs {`${income - total}`}</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -341,14 +452,14 @@ const NewBalance = () => {
                                                                 {((
                                                                     (index === 0) ||
                                                                     (index !== 0 && (
-                                                                    ( new Date(transaction[index].fulldate.seconds*1000).getDate() !== new Date(transaction[index-1].fulldate.seconds*1000).getDate()) ||
-                                                                    ( new Date(transaction[index].fulldate.seconds*1000).getMonth() !== new Date(transaction[index-1].fulldate.seconds*1000).getMonth()) || 
-                                                                    ( new Date(transaction[index].fulldate.seconds*1000).getFullYear() !== new Date(transaction[index-1].fulldate.seconds*1000).getFullYear())
+                                                                        (new Date(transaction[index].fulldate.seconds * 1000).getDate() !== new Date(transaction[index - 1].fulldate.seconds * 1000).getDate()) ||
+                                                                        (new Date(transaction[index].fulldate.seconds * 1000).getMonth() !== new Date(transaction[index - 1].fulldate.seconds * 1000).getMonth()) ||
+                                                                        (new Date(transaction[index].fulldate.seconds * 1000).getFullYear() !== new Date(transaction[index - 1].fulldate.seconds * 1000).getFullYear())
                                                                     ))
-                                                                    ) 
+                                                                )
                                                                     &&
                                                                     <div className="flexy mt1">
-                                                                        {`${new Date(element.fulldate.seconds*1000).getDate()}/${new Date(element.fulldate.seconds*1000).getMonth() + 1}/${new Date(element.fulldate.seconds*1000).getFullYear()}`}
+                                                                        {`${new Date(element.fulldate.seconds * 1000).getDate()}/${new Date(element.fulldate.seconds * 1000).getMonth() + 1}/${new Date(element.fulldate.seconds * 1000).getFullYear()}`}
                                                                     </div>
                                                                 )}
 

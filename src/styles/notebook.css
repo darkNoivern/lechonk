@@ -67,3 +67,19 @@
     padding-left: 0.5rem;
     cursor: pointer;
 }
+
+.flex-space-between{
+    display: flex;
+    justify-content: space-between;
+}
+
+.notebook-delete-icon{
+    font-size: 1.25rem !important;
+    color: var(--first-color);
+    cursor: pointer;
+    padding-right: 1.25rem;
+}
+
+.custom-height-notebooks{
+    height: 2.25rem;
+}
